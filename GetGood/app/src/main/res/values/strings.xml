@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Get Good</string>
+    <string name="app_pref">GG_PREFERENCES</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="wrong_email_password">You\'ve entered a wrong email or password.</string>
 </resources>
