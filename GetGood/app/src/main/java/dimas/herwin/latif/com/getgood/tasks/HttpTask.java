@@ -10,11 +10,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class LoginTask extends AsyncTask<String, Void, String> {
+public class HttpTask extends AsyncTask<String, Void, String> {
 
     AsyncTaskListener asyncTaskListener;
 
-    public LoginTask(AsyncTaskListener listener){
+    public HttpTask(AsyncTaskListener listener){
         asyncTaskListener = listener;
     }
 
@@ -42,7 +42,7 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
             int responseCode = conn.getResponseCode();
 
-            InputStream inputStream = (responseCode == 200)? conn.getInputStream() : conn.getErrorStream();
+            InputStream inputStream = (responseCode == 200 || responseCode == 201)? conn.getInputStream() : conn.getErrorStream();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String inputLine;
@@ -64,4 +64,5 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         asyncTaskListener.onTaskCompleted(response);
     }
+
 }

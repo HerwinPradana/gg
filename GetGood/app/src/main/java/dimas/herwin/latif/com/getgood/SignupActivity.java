@@ -14,57 +14,49 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
-public class LoginActivity extends AppCompatActivity implements AsyncTaskListener{
+public class SignupActivity extends AppCompatActivity implements AsyncTaskListener{
 
-    public final static String LOGIN_MESSAGE = "dimas.herwin.latif.com.getgood.LOGIN_MESSAGE";
-
+    EditText editTextName;
     EditText editTextEmail;
     EditText editTextPassword;
-    Button   buttonLogin;
-    TextView textViewMessages;
+    Button   buttonSignup;
+    TextView textViewErrors;
 
     SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
-        editTextEmail       = (EditText) findViewById(R.id.email);
-        editTextPassword    = (EditText) findViewById(R.id.password);
-        buttonLogin         = (Button) findViewById(R.id.login);
-        textViewMessages    = (TextView) findViewById(R.id.errors);
+        editTextName     = (EditText) findViewById(R.id.name);
+        editTextEmail    = (EditText) findViewById(R.id.email);
+        editTextPassword = (EditText) findViewById(R.id.password);
+        buttonSignup     = (Button) findViewById(R.id.login);
+        textViewErrors   = (TextView) findViewById(R.id.errors);
 
-        sharedPreferences   = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
-
-        Intent intent   = getIntent();
-        String message  = intent.getStringExtra(LoginActivity.LOGIN_MESSAGE);
-        textViewMessages.setText(message);
+        sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
     }
 
     public void signup(View view){
-        Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
-    }
-
-    public void login(View view){
-        textViewMessages.setText("");
+        textViewErrors.setText("");
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo                 = connectivityManager.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnected()){
+            String name     = editTextName.getText().toString();
             String email    = editTextEmail.getText().toString();
             String password = editTextPassword.getText().toString();
 
-            String parameters = "email=" + email + "&password=" + password;
-            String url = "http://192.168.122.1/ggwp/public/api/auth/login";
+            String parameters = "name=" + name + "&email=" + email + "&password=" + password;
+            String url = "http://192.168.122.1/ggwp/public/api/auth/signup";
 
             new HttpTask(this).execute(url, "POST", parameters);
         }
@@ -75,15 +67,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
 
     public void onTaskCompleted(String response){
         try {
-            JSONObject loginData = new JSONObject(response);
+            JSONObject signupData = new JSONObject(response);
 
-            if(!loginData.has("error") && loginData.getString("status").equals("ok")){
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("token", loginData.getString("token"));
-                editor.apply();
+            if(!signupData.has("error") && signupData.getString("status").equals("ok")){
+                Intent intent = new Intent(this, LoginActivity.class);
+                intent.putExtra(LoginActivity.LOGIN_MESSAGE, getString(R.string.signup_succeed));
+                startActivity(intent);
             }
             else{
-                JSONObject error    = loginData.getJSONObject("error");
+                JSONObject error    = signupData.getJSONObject("error");
                 String errorString  = getString(R.string.login_failed);
 
                 int statusCode = error.getInt("status_code");
@@ -91,6 +83,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
                 if(statusCode == 422) {
                     // Unprocessable Entity / Field requirements not met.
                     JSONObject errors = error.getJSONObject("errors");
+
+                    if(errors.has("name")) {
+                        JSONArray messages = errors.getJSONArray("name");
+
+                        int nMessages = messages.length();
+                        for(int i = 0;i < nMessages;i++)
+                            errorString += "\n" + messages.getString(i);
+                    }
 
                     if(errors.has("email")) {
                         JSONArray messages = errors.getJSONArray("email");
@@ -108,12 +108,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
                             errorString += "\n" + messages.getString(i);
                     }
                 }
-                else if(statusCode == 403){
+                else if(statusCode == 500){
                     // Forbidden
-                    errorString += "\n" + getString(R.string.wrong_email_password);
+                    errorString += "\n" + getString(R.string.email_already_used);
                 }
 
-                textViewMessages.setText(errorString);
+                textViewErrors.setText(errorString);
             }
         }
         catch (JSONException error){
