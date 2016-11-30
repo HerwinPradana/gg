@@ -9,12 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 
+import dimas.herwin.latif.com.getgood.fragments.NewStuffFragment;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
-import dimas.herwin.latif.com.getgood.fragments.TimelineFragment;
+import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
 
-public class MainActivity extends AppCompatActivity implements  TimelineFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, NewStuffFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,22 +51,27 @@ public class MainActivity extends AppCompatActivity implements  TimelineFragment
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private TimelineFragment timelineFragment;
-        private TimelineFragment timelineFragment2;
+        private FeedFragment        feedFragment;
+        private NewStuffFragment    newStuffFragment;
+        private FeedFragment        communitiesFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            timelineFragment = TimelineFragment.newInstance();
-            timelineFragment2 = TimelineFragment.newInstance();
+            feedFragment        = FeedFragment.newInstance();
+            newStuffFragment    = NewStuffFragment.newInstance();
+            communitiesFragment = FeedFragment.newInstance();
         }
 
         @Override
         public Fragment getItem(int position) {
+            Log.d("POSITION", String.valueOf(position));
             switch(position){
                 case 0:
-                    return timelineFragment;
+                    return feedFragment;
                 case 1:
-                    return timelineFragment2;
+                    return newStuffFragment;
+                case 3:
+                    return communitiesFragment;
                 default:
                     return null;
             }
@@ -73,16 +80,18 @@ public class MainActivity extends AppCompatActivity implements  TimelineFragment
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Timeline";
+                    return getString(R.string.feed);
                 case 1:
-                    return "Timeline 2";
+                    return getString(R.string.new_stuff);
+                case 2:
+                    return getString(R.string.communities);
             }
             return null;
         }

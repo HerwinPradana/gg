@@ -13,29 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dimas.herwin.latif.com.getgood.R;
-import dimas.herwin.latif.com.getgood.fragments.items.Post;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TimelineFragment.OnFragmentInteractionListener} interface
+ * {@link FeedFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TimelineFragment#newInstance} factory method to
+ * Use the {@link FeedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimelineFragment extends Fragment implements PostFragment.OnListFragmentInteractionListener, AsyncTaskListener {
+public class FeedFragment extends Fragment implements AsyncTaskListener {
 
     private OnFragmentInteractionListener listener;
     private View view;
 
-    public TimelineFragment() {
+    public FeedFragment() {
         // Required empty public constructor
     }
 
-    public static TimelineFragment newInstance() {
-        return new TimelineFragment();
+    public static FeedFragment newInstance() {
+        return new FeedFragment();
     }
 
     @Override
@@ -43,13 +42,13 @@ public class TimelineFragment extends Fragment implements PostFragment.OnListFra
         super.onCreate(savedInstanceState);
     }
 
-    private void loadTimeline() {
+    private void loadFeeds() {
         if(view.findViewById(R.id.list_post) != null){
             ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://192.168.122.1/ggwp/public/api/auth/login?email=herwinpradana@gmail.com&password=dot4mania";
+                String url = "http://192.168.122.1/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
 
                 new HttpTask(this).execute(url, "POST", "");
             }
@@ -57,9 +56,6 @@ public class TimelineFragment extends Fragment implements PostFragment.OnListFra
                 Log.e("CONNECTION: ", "NOT CONNECTED");
             }
         }
-    }
-
-    public void onListFragmentInteraction(Post post){
     }
 
     public void onTaskCompleted(String response) {
@@ -85,10 +81,10 @@ public class TimelineFragment extends Fragment implements PostFragment.OnListFra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        view = inflater.inflate(R.layout.fragment_feed, container, false);
 
         if(savedInstanceState == null)
-            loadTimeline();
+            loadFeeds();
 
         // Inflate the layout for this fragment
         return view;

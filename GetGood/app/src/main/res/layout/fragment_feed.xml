@@ -30,6 +30,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="40dip"
             android:text="@string/post"/>
     </LinearLayout>
     <!-- List -->
