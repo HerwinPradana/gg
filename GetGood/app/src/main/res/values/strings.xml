@@ -24,4 +24,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="user_image">User image</string>
+    <string name="content_image">Content image</string>
+    <string name="post">Post</string>
+
+    <!-- Dummy strings -->
+    <string name="dummy_post">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="dummy_user">Herwin Pradana</string>
+    <string name="dummy_date">28 November at 20:20</string>
 </resources>

@@ -28,14 +28,7 @@ public class PostList {
             // Add some sample items.
             int nPosts = posts.length();
             for (int i = 0; i < nPosts; i++) {
-                JSONObject post = posts.getJSONObject(i);
-
-                String id       = post.optString("id");
-                String title    = post.optString("title");
-                String content  = post.optString("content");
-                String image    = post.optString("image");
-
-                addItem(id, title, content, image);
+                addItem(posts.getJSONObject(i));
             }
         }
         catch (JSONException error){
@@ -48,8 +41,8 @@ public class PostList {
         itemMap.put(item.id, item);
     }
 
-    private void addItem(String id, String title, String content, String image){
-        Post item = new Post(id, title, content, image);
+    private void addItem(JSONObject jsonObject){
+        Post item = new Post(jsonObject);
         addItem(item);
     }
 }

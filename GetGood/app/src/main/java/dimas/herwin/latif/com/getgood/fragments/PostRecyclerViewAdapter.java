@@ -60,30 +60,40 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final View       view;
-        private final TextView   titleView;
-        private final TextView   contentView;
+        private final View      view;
+        private final TextView  contentView;
+        private final TextView  createdAtView;
         private final ImageView imageView;
+        private final ImageView userImageView;
+        private final TextView  userNameView;
         public Post             item;
 
         public ViewHolder(View view) {
             super(view);
-            this.view   = view;
-            titleView   = (TextView) view.findViewById(R.id.title);
-            contentView = (TextView) view.findViewById(R.id.content);
-            imageView   = (ImageView) view.findViewById(R.id.image);
+            this.view       = view;
+            contentView     = (TextView) view.findViewById(R.id.content);
+            createdAtView   = (TextView) view.findViewById(R.id.created_at);
+            imageView       = (ImageView) view.findViewById(R.id.image);
+            userImageView   = (ImageView) view.findViewById(R.id.user_image);
+            userNameView    = (TextView) view.findViewById(R.id.user_name);
         }
 
         public void setItem(Post item){
             this.item = item;
-            this.titleView.setText(item.title);
-            this.contentView.setText(item.content);
-            Picasso.with(context).load("http://goku.ngeartstudio.com/images/" + item.image).into(imageView);
+
+            contentView.setText(item.content);
+            createdAtView.setText(item.createdAt);
+            userNameView.setText(item.userName);
+
+            //Picasso.with(context).setLoggingEnabled(true);
+            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/posts/" + item.image).into(imageView);
+            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
         }
 
         public void cleanup(){
             Picasso.with(context).cancelRequest(imageView);
             imageView.setImageDrawable(null);
+            userImageView.setImageResource(R.mipmap.placeholder);
         }
 
         public View getView(){
@@ -92,7 +102,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
         @Override
         public String toString() {
-            return super.toString() + " '" + titleView.getText() + "'";
+            return super.toString() + " '" + contentView.getText() + "'";
         }
     }
 }

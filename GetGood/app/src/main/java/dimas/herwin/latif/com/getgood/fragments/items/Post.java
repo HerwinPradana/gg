@@ -1,21 +1,29 @@
 package dimas.herwin.latif.com.getgood.fragments.items;
 
+import org.json.JSONObject;
+
 public class Post {
     public final String id;
-    public final String title;
     public final String content;
     public final String image;
+    public final String createdAt;
+    public final String userId;
+    public final String userName;
+    public final String userImage;
 
-    public Post(String id, String title, String content, String image){
-        this.id      = id;
-        this.title   = title;
-        this.content = content;
-        this.image   = image;
+    public Post(JSONObject jsonObject){
+        id          = jsonObject.optString("id");
+        content     = jsonObject.optString("content");
+        image       = jsonObject.optString("image");
+        createdAt   = jsonObject.optString("created_at");
+        userId      = jsonObject.optString("user_id");
+        userName    = jsonObject.optString("user_name");
+        userImage   = jsonObject.optString("user_image");
     }
 
     @Override
     public String toString() {
-        return title;
+        return content;
     }
 
 }
