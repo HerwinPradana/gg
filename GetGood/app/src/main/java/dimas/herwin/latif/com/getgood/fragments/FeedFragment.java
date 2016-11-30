@@ -60,7 +60,7 @@ public class FeedFragment extends Fragment implements AsyncTaskListener {
 
     public void onTaskCompleted(String response) {
         try {
-            response = "[{\"id\" : 1, \"content\": \"Don't pirate stuff, you guys.\", \"image\": \"commiedl.png\", \"created_at\": \"Today at 10:44 PM\", \"user_id\" : 1, \"user_name\": \"Herwin Pradana\", \"user_image\": \"test.png\"}, {\"id\" : 2, \"content\": \"TEST 2\", \"image\": \"\", \"created_at\": \"Today at 10:44 PM\", \"user_id\" : 2, \"user_name\": \"Lord Popo\", \"user_image\": \"popo.png\"}]";
+            response = "[{\"id\" : 1, \"content\": \"A poster for the anti-piracy community.\", \"image\": \"commiedl.png\", \"created_at\": \"Today at 10:44 PM\", \"user_id\" : 1, \"user_name\": \"Herwin Pradana\", \"user_image\": \"test.png\"}, {\"id\" : 2, \"content\": \"You can just post these to test stuff.\", \"image\": \"\", \"created_at\": \"Today at 10:44 PM\", \"user_id\" : 2, \"user_name\": \"Lord Popo\", \"user_image\": \"popo.png\"}]";
 
             PostFragment postFragment = new PostFragment();
 

@@ -9,14 +9,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 
+import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
+import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
 import dimas.herwin.latif.com.getgood.fragments.NewStuffFragment;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
 import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
+import dimas.herwin.latif.com.getgood.fragments.items.Community;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
 
-public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, NewStuffFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, NewStuffFragment.OnFragmentInteractionListener, CommunitiesFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener, CommunityFragment.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
 
     }
 
+    public void onListFragmentInteraction(Community post){
+
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -53,24 +59,23 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
 
         private FeedFragment        feedFragment;
         private NewStuffFragment    newStuffFragment;
-        private FeedFragment        communitiesFragment;
+        private CommunitiesFragment communitiesFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             feedFragment        = FeedFragment.newInstance();
             newStuffFragment    = NewStuffFragment.newInstance();
-            communitiesFragment = FeedFragment.newInstance();
+            communitiesFragment = CommunitiesFragment.newInstance();
         }
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("POSITION", String.valueOf(position));
             switch(position){
                 case 0:
                     return feedFragment;
                 case 1:
                     return newStuffFragment;
-                case 3:
+                case 2:
                     return communitiesFragment;
                 default:
                     return null;

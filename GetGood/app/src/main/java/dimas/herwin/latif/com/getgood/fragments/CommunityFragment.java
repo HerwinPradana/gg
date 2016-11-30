@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dimas.herwin.latif.com.getgood.R;
-import dimas.herwin.latif.com.getgood.fragments.adapters.PostRecyclerViewAdapter;
-import dimas.herwin.latif.com.getgood.fragments.lists.PostList;
-import dimas.herwin.latif.com.getgood.fragments.items.Post;
+import dimas.herwin.latif.com.getgood.fragments.adapters.CommunityRecyclerViewAdapter;
+import dimas.herwin.latif.com.getgood.fragments.items.Community;
+import dimas.herwin.latif.com.getgood.fragments.lists.CommunityList;
 
 /**
  * A fragment representing a list of Items.
@@ -20,12 +20,12 @@ import dimas.herwin.latif.com.getgood.fragments.items.Post;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PostFragment extends Fragment {
+public class CommunityFragment extends Fragment {
 
-    public static final String ARG_JSON = "dimas.herwin.latif.com.getgood.post-data";
+    public static final String ARG_JSON = "dimas.herwin.latif.com.getgood.community-data";
 
     private String          json;
-    private PostList        postList;
+    private CommunityList   communityList;
     private RecyclerView    recyclerView;
 
     private OnListFragmentInteractionListener listener;
@@ -34,7 +34,7 @@ public class PostFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PostFragment() {
+    public CommunityFragment() {
     }
 
     @Override
@@ -45,12 +45,12 @@ public class PostFragment extends Fragment {
             json = getArguments().getString(ARG_JSON);
         }
 
-        postList = new PostList(json);
+        communityList = new CommunityList(json);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_community_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -58,7 +58,7 @@ public class PostFragment extends Fragment {
 
             recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new PostRecyclerViewAdapter(postList.items, listener, context));
+            recyclerView.setAdapter(new CommunityRecyclerViewAdapter(communityList.items, listener, context));
         }
         return view;
     }
@@ -98,6 +98,6 @@ public class PostFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Post item);
+        void onListFragmentInteraction(Community item);
     }
 }

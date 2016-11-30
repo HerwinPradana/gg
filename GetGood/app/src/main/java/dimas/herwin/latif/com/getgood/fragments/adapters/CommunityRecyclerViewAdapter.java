@@ -1,4 +1,4 @@
-package dimas.herwin.latif.com.getgood.fragments;
+package dimas.herwin.latif.com.getgood.fragments.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,18 +10,19 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import dimas.herwin.latif.com.getgood.R;
-import dimas.herwin.latif.com.getgood.fragments.items.Post;
-
 import java.util.List;
 
-public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder> {
+import dimas.herwin.latif.com.getgood.R;
+import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
+import dimas.herwin.latif.com.getgood.fragments.items.Community;
 
-    private final List<Post> items;
-    private final PostFragment.OnListFragmentInteractionListener listener;
+public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<CommunityRecyclerViewAdapter.ViewHolder> {
+
+    private final List<Community> items;
+    private final CommunityFragment.OnListFragmentInteractionListener listener;
     private Context context;
 
-    public PostRecyclerViewAdapter(List<Post> items, PostFragment.OnListFragmentInteractionListener listener, Context context) {
+    public CommunityRecyclerViewAdapter(List<Community> items, CommunityFragment.OnListFragmentInteractionListener listener, Context context) {
         this.items    = items;
         this.listener = listener;
         this.context  = context;
@@ -29,7 +30,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_post, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_community, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,39 +62,32 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final View      view;
-        private final TextView  contentView;
-        private final TextView  createdAtView;
+        private final TextView  nameView;
+        private final TextView  descView;
         private final ImageView imageView;
-        private final ImageView userImageView;
-        private final TextView  userNameView;
-        public Post             item;
+        public Community        item;
 
         public ViewHolder(View view) {
             super(view);
-            this.view       = view;
-            contentView     = (TextView) view.findViewById(R.id.content);
-            createdAtView   = (TextView) view.findViewById(R.id.created_at);
-            imageView       = (ImageView) view.findViewById(R.id.image);
-            userImageView   = (ImageView) view.findViewById(R.id.user_image);
-            userNameView    = (TextView) view.findViewById(R.id.user_name);
+            this.view   = view;
+            nameView    = (TextView) view.findViewById(R.id.name);
+            descView    = (TextView) view.findViewById(R.id.desc);
+            imageView   = (ImageView) view.findViewById(R.id.image);
         }
 
-        public void setItem(Post item){
+        public void setItem(Community item){
             this.item = item;
 
-            contentView.setText(item.content);
-            createdAtView.setText(item.createdAt);
-            userNameView.setText(item.userName);
+            nameView.setText(item.name);
+            descView.setText(item.desc);
 
             //Picasso.with(context).setLoggingEnabled(true);
-            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/posts/" + item.image).into(imageView);
-            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
+            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/communities/" + item.image).placeholder(R.mipmap.placeholder).into(imageView);
         }
 
         public void cleanup(){
             Picasso.with(context).cancelRequest(imageView);
-            imageView.setImageDrawable(null);
-            userImageView.setImageResource(R.mipmap.placeholder);
+            imageView.setImageResource(R.mipmap.placeholder);
         }
 
         public View getView(){
@@ -102,7 +96,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
 
         @Override
         public String toString() {
-            return super.toString() + " '" + contentView.getText() + "'";
+            return super.toString() + " '" + nameView.getText() + "'";
         }
     }
 }

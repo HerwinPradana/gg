@@ -13,29 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dimas.herwin.latif.com.getgood.R;
-import dimas.herwin.latif.com.getgood.fragments.items.Post;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewStuffFragment.OnFragmentInteractionListener} interface
+ * {@link CommunitiesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewStuffFragment#newInstance} factory method to
+ * Use the {@link CommunitiesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewStuffFragment extends Fragment implements AsyncTaskListener {
+public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
 
     private OnFragmentInteractionListener listener;
     private View view;
 
-    public NewStuffFragment() {
+    public CommunitiesFragment() {
         // Required empty public constructor
     }
 
-    public static NewStuffFragment newInstance() {
-        return new NewStuffFragment();
+    public static CommunitiesFragment newInstance() {
+        return new CommunitiesFragment();
     }
 
     @Override
@@ -43,8 +42,8 @@ public class NewStuffFragment extends Fragment implements AsyncTaskListener {
         super.onCreate(savedInstanceState);
     }
 
-    private void loadTimeline() {
-        if(view.findViewById(R.id.list_post) != null){
+    private void loadFeeds() {
+        if(view.findViewById(R.id.list_community) != null){
             ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
@@ -61,31 +60,31 @@ public class NewStuffFragment extends Fragment implements AsyncTaskListener {
 
     public void onTaskCompleted(String response) {
         try {
-            response = "[{\"id\" : 1, \"content\": \"This post is about a hobby you haven't discovered.\", \"image\": \"fight.png\", \"created_at\": \"Yesterday at 8:21 AM\", \"user_id\" : 1, \"user_name\": \"Oberyn Martell\", \"user_image\": \"oberyn-martell.jpg\"}, {\"id\" : 2, \"content\": \"Man, this coaching group is great.\", \"image\": \"random.png\", \"created_at\": \"15-11-2016 at 7:14 PM\", \"user_id\" : 2, \"user_name\": \"Lord Popo\", \"user_image\": \"popo.png\"}]";
+            response = "[{\"id\" : 1, \"name\": \"Archery Community\", \"desc\": \"We do traditional archery.\", \"image\": \"archery.jpg\"}]";
 
-            PostFragment postFragment = new PostFragment();
+            CommunityFragment communityFragment = new CommunityFragment();
 
             Bundle args = new Bundle();
-            args.putString(PostFragment.ARG_JSON, response);
+            args.putString(CommunityFragment.ARG_JSON, response);
 
-            postFragment.setArguments(args);
+            communityFragment.setArguments(args);
 
             FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.list_post, postFragment);
+            transaction.replace(R.id.list_community, communityFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         catch (IllegalStateException error){
-            Log.e("Timeline Fragment", error.getMessage());
+            Log.e("Communities Fragment", error.getMessage());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_feed, container, false);
+        view = inflater.inflate(R.layout.fragment_communities, container, false);
 
         if(savedInstanceState == null)
-            loadTimeline();
+            loadFeeds();
 
         // Inflate the layout for this fragment
         return view;
