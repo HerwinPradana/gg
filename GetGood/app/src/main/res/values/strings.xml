@@ -31,9 +31,12 @@
     <string name="feed">Feed</string>
     <string name="new_stuff">New Stuff</string>
     <string name="communities">Communities</string>
+    <string name="join">Join</string>
+    <string name="take_a_look">Take a look</string>
 
     <!-- Dummy strings -->
     <string name="dummy_post">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="dummy_user">Herwin Pradana</string>
     <string name="dummy_date">28 November at 20:20</string>
+    <string name="dummy_community">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</string>
 </resources>

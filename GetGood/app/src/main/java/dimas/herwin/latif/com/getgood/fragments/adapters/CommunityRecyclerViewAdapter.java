@@ -2,9 +2,11 @@ package dimas.herwin.latif.com.getgood.fragments.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,17 +67,21 @@ public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<Community
         private final TextView  nameView;
         private final TextView  descView;
         private final ImageView imageView;
+        private final Button    detailButton;
+        private final Button    joinButon;
         public Community        item;
 
         public ViewHolder(View view) {
             super(view);
-            this.view   = view;
-            nameView    = (TextView) view.findViewById(R.id.name);
-            descView    = (TextView) view.findViewById(R.id.desc);
-            imageView   = (ImageView) view.findViewById(R.id.image);
+            this.view    = view;
+            nameView     = (TextView) view.findViewById(R.id.name);
+            descView     = (TextView) view.findViewById(R.id.desc);
+            imageView    = (ImageView) view.findViewById(R.id.image);
+            detailButton = (Button) view.findViewById(R.id.detail);
+            joinButon    = (Button) view.findViewById(R.id.join);
         }
 
-        public void setItem(Community item){
+        public void setItem(final Community item){
             this.item = item;
 
             nameView.setText(item.name);
@@ -83,6 +89,20 @@ public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<Community
 
             //Picasso.with(context).setLoggingEnabled(true);
             Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/communities/" + item.image).placeholder(R.mipmap.placeholder).into(imageView);
+
+            detailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("CLICK", "DETAIL " + item.id);
+                }
+            });
+
+            joinButon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v){
+                    Log.d("CLICK", "JOIN " + item.id);
+                }
+            });
         }
 
         public void cleanup(){
