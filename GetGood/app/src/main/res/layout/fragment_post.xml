@@ -20,8 +20,9 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/user_image"/>
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="5dp">
             <TextView
@@ -29,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/dummy_user"/>
             <TextView
                 android:id="@+id/created_at"
@@ -56,6 +58,27 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/content_image" />
 
+    <!-- Tags -->
+    <LinearLayout
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:background="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <!-- Separator -->
     <View
         android:background="#999"
         android:layout_width="match_parent"

@@ -24,14 +24,15 @@
             android:layout_height="wrap_content"
             android:minHeight="100dp"
             android:orientation="vertical"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp">
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="15sp"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/dummy_user"/>
             <TextView
                 android:id="@+id/desc"
@@ -50,7 +51,7 @@
                     android:id="@+id/detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/darkRed"
+                    android:background="@color/colorPrimary"
                     android:minHeight="30dp"
                     android:textColor="@color/white"
                     android:text="@string/take_a_look"
@@ -62,7 +63,7 @@
                     android:id="@+id/join"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/darkRed"
+                    android:background="@color/colorPrimary"
                     android:minHeight="30dp"
                     android:textColor="@color/white"
                     android:text="@string/join"
