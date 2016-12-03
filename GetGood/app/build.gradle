@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "dimas.herwin.latif.com.getgood"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.doodle.android:android-material-chips:1.1.0'
 }
