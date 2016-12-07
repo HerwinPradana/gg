@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:chip="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -64,29 +64,10 @@
         android:id="@+id/tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        chip:chip_side_padding="10dp">
 
     </com.plumillonforge.android.chipview.ChipView>
-    <!--
-    <LinearLayout
-        android:id="@+id/tags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:padding="5dp"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:background="@color/colorPrimary"/>
-    </LinearLayout>
-    -->
     <!-- Separator -->
     <View
         android:background="#999"
