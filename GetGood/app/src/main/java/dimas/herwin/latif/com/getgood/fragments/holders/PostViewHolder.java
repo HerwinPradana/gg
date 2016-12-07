@@ -6,17 +6,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.plumillonforge.android.chipview.Chip;
 import com.plumillonforge.android.chipview.ChipView;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.fragments.adapters.TagChipViewAdapter;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
-import dimas.herwin.latif.com.getgood.fragments.items.Tag;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
     private Context context;
@@ -52,12 +47,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         createdAtView.setText(item.createdAt);
         userNameView.setText(item.userName);
 
-        if(item.isTutorial) {
-            List<Chip> chipList = new ArrayList<>();
-            chipList.add(new Tag("Tutorial"));
-
-            tagsView.setChipList(chipList);
-        }
+        if(!item.tagChips.isEmpty())
+            tagsView.setChipList(item.tagChips);
 
         String server = context.getResources().getString(R.string.server_address);
 
