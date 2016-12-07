@@ -122,6 +122,7 @@ public class SignupActivity extends AppCompatActivity{
             }
         }
         catch (JSONException error){
+            Log.e("Response", response);
             Log.e("JSONException", "Invalid string response.");
         }
     }
