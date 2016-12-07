@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
             new HttpTask(this).execute(url, "POST", parameters);
         }
         else{
-            Log.e("CONNECTION: ", "NOT CONNECTED");
+            Log.e("NetworkInfo", "Not connected to a network.");
         }
     }
 
@@ -79,8 +79,16 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
 
             if(!loginData.has("error") && loginData.getString("status").equals("ok")){
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                JSONObject user = loginData.getJSONObject("user");
+
                 editor.putString("token", loginData.getString("token"));
+                editor.putString("user_name", user.getString("name"));
+                editor.putString("user_image", user.getString("image"));
                 editor.apply();
+
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }
             else{
                 JSONObject error    = loginData.getJSONObject("error");
@@ -116,8 +124,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
                 textViewMessages.setText(errorString);
             }
         }
-        catch (JSONException error){
+        catch (JSONException e){
             Log.e("JSONException", "Invalid string response.");
+        }
+        catch(Exception e){
+            Log.e("SplashActivity", e.getMessage());
         }
     }
 }

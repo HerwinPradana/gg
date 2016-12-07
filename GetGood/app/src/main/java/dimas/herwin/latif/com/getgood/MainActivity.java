@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
         private NewStuffFragment    newStuffFragment;
         private CommunitiesFragment communitiesFragment;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             feedFragment        = FeedFragment.newInstance();
             newStuffFragment    = NewStuffFragment.newInstance();

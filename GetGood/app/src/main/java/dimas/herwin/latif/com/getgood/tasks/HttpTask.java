@@ -19,11 +19,11 @@ public class HttpTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected String doInBackground(String... parameters) {
         try{
-            String method = urls[1];
-            String params = urls[2];
-            String target = (method.equals("GET"))? urls[0] + "?" + params : urls[0];
+            String method = parameters[1];
+            String params = parameters[2];
+            String target = (method.equals("GET"))? parameters[0] + "?" + params : parameters[0];
 
             URL url = new URL(target);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -31,6 +31,11 @@ public class HttpTask extends AsyncTask<String, Void, String> {
             conn.setConnectTimeout(15000);
             conn.setRequestMethod(method);
             conn.setDoInput(true);
+
+            if(parameters.length > 3) {
+                String token = parameters[3];
+                conn.setRequestProperty("Authorization", "bearer " + token);
+            }
 
             if(method.equals("POST")){
                 conn.setDoOutput(true);
