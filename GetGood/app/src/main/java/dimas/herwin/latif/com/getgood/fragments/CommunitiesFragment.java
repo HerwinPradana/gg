@@ -48,7 +48,7 @@ public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://192.168.122.1/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
+                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
 
                 new HttpTask(this).execute(url, "POST", "");
             }

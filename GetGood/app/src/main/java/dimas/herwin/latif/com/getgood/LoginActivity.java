@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
             String password = editTextPassword.getText().toString();
 
             String parameters = "email=" + email + "&password=" + password;
-            String url = "http://192.168.122.1/ggwp/public/api/auth/login";
+            String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login";
 
             new HttpTask(this).execute(url, "POST", parameters);
         }
@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
                 JSONObject user = loginData.getJSONObject("user");
 
                 editor.putString("token", loginData.getString("token"));
+                editor.putString("user_id", user.getString("id"));
                 editor.putString("user_name", user.getString("name"));
                 editor.putString("user_image", user.getString("image"));
                 editor.apply();

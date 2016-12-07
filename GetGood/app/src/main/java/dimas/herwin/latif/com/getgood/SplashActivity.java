@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity implements AsyncTaskListen
                     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
                     if(networkInfo != null && networkInfo.isConnected()){
-                        String url = "http://192.168.122.1/ggwp/public/api/checkToken";
+                        String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/checkToken";
 
                         new HttpTask(SplashActivity.this).execute(url, "GET", "", sharedPreferences.getString("token", ""));
                     }

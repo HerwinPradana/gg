@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncTaskListen
             String password = editTextPassword.getText().toString();
 
             String parameters = "name=" + name + "&email=" + email + "&password=" + password;
-            String url = "http://192.168.122.1/ggwp/public/api/auth/signup";
+            String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/signup";
 
             new HttpTask(this).execute(url, "POST", parameters);
         }

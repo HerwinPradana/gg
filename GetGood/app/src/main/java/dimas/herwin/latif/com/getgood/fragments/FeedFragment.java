@@ -63,7 +63,7 @@ public class FeedFragment extends Fragment implements AsyncTaskListener {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://192.168.122.1/ggwp/public/api/post";
+                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post";
 
                 new HttpTask(this).execute(url, "GET", "", sharedPreferences.getString("token", ""));
             }
