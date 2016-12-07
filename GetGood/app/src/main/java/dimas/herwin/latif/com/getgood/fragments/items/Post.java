@@ -20,7 +20,7 @@ public class Post {
         userId      = jsonObject.optString("user_id");
         userName    = jsonObject.optString("user_name");
         userImage   = jsonObject.optString("user_image");
-        isTutorial  = jsonObject.optBoolean("is_tutorial");
+        isTutorial  = jsonObject.optInt("is_tutorial") == 1;
     }
 
     @Override

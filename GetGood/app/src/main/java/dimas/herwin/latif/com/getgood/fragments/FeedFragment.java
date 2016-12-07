@@ -120,7 +120,7 @@ public class FeedFragment extends Fragment {
         String image = sharedPreferences.getString("user_image", "");
 
         ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
-        Picasso.with(getActivity()).load("http://192.168.43.111/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
+        Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
 
         if(savedInstanceState == null)
             loadFeeds();
