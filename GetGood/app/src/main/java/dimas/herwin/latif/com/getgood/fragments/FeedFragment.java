@@ -3,7 +3,6 @@ package dimas.herwin.latif.com.getgood.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -37,7 +36,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Use the {@link FeedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedFragment extends Fragment implements AsyncTaskListener {
+public class FeedFragment extends Fragment {
 
     private OnFragmentInteractionListener listener;
     private View view;
@@ -65,7 +64,12 @@ public class FeedFragment extends Fragment implements AsyncTaskListener {
             if(networkInfo != null && networkInfo.isConnected()){
                 String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post";
 
-                new HttpTask(this).execute(url, "GET", "", sharedPreferences.getString("token", ""));
+                new HttpTask(new AsyncTaskListener() {
+                    @Override
+                    public void onTaskCompleted(String response) {
+                        handleGetPostTask(response);
+                    }
+                }).execute(url, "GET", "", sharedPreferences.getString("token", ""));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -73,7 +77,7 @@ public class FeedFragment extends Fragment implements AsyncTaskListener {
         }
     }
 
-    public void onTaskCompleted(String response) {
+    public void handleGetPostTask(String response) {
         try {
             Log.d("RESPONSE", response);
             JSONObject json = new JSONObject(response);
@@ -126,14 +130,12 @@ public class FeedFragment extends Fragment implements AsyncTaskListener {
         return view;
     }
 
-    /*
     // TO-DO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (listener != null) {
             listener.onFragmentInteraction(uri);
         }
     }
-    */
 
     @Override
     public void onAttach(Context context) {

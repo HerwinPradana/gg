@@ -20,7 +20,7 @@ import org.json.JSONException;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
-public class LoginActivity extends AppCompatActivity implements AsyncTaskListener{
+public class LoginActivity extends AppCompatActivity{
 
     public final static String LOGIN_MESSAGE = "dimas.herwin.latif.com.getgood.LOGIN_MESSAGE";
 
@@ -66,14 +66,19 @@ public class LoginActivity extends AppCompatActivity implements AsyncTaskListene
             String parameters = "email=" + email + "&password=" + password;
             String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login";
 
-            new HttpTask(this).execute(url, "POST", parameters);
+            new HttpTask(new AsyncTaskListener() {
+                @Override
+                public void onTaskCompleted(String response) {
+                    handleLoginTask(response);
+                }
+            }).execute(url, "POST", parameters);
         }
         else{
             Log.e("NetworkInfo", "Not connected to a network.");
         }
     }
 
-    public void onTaskCompleted(String response){
+    public void handleLoginTask(String response){
         try {
             JSONObject loginData = new JSONObject(response);
 

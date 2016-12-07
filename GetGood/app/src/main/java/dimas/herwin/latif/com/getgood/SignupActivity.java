@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
-public class SignupActivity extends AppCompatActivity implements AsyncTaskListener{
+public class SignupActivity extends AppCompatActivity{
 
     EditText editTextName;
     EditText editTextEmail;
@@ -58,14 +58,19 @@ public class SignupActivity extends AppCompatActivity implements AsyncTaskListen
             String parameters = "name=" + name + "&email=" + email + "&password=" + password;
             String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/signup";
 
-            new HttpTask(this).execute(url, "POST", parameters);
+            new HttpTask(new AsyncTaskListener() {
+                @Override
+                public void onTaskCompleted(String response) {
+                    handleSignupTask(response);
+                }
+            }).execute(url, "POST", parameters);
         }
         else{
             Log.e("CONNECTION: ", "NOT CONNECTED");
         }
     }
 
-    public void onTaskCompleted(String response){
+    public void handleSignupTask(String response){
         try {
             JSONObject signupData = new JSONObject(response);
 

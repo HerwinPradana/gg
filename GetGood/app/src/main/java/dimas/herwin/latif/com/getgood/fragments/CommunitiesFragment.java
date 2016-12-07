@@ -24,7 +24,7 @@ import dimas.herwin.latif.com.getgood.tasks.HttpTask;
  * Use the {@link CommunitiesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
+public class CommunitiesFragment extends Fragment{
 
     private OnFragmentInteractionListener listener;
     private View view;
@@ -50,7 +50,12 @@ public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
             if(networkInfo != null && networkInfo.isConnected()){
                 String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
 
-                new HttpTask(this).execute(url, "POST", "");
+                new HttpTask(new AsyncTaskListener() {
+                    @Override
+                    public void onTaskCompleted(String response) {
+                        handleGetCommunitiesTask(response);
+                    }
+                }).execute(url, "POST", "");
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -58,7 +63,7 @@ public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
         }
     }
 
-    public void onTaskCompleted(String response) {
+    public void handleGetCommunitiesTask(String response) {
         try {
             response = "[{\"id\" : 1, \"name\": \"Archery Community\", \"desc\": \"We do traditional archery.\", \"image\": \"archery.jpg\"}]";
 
@@ -90,14 +95,12 @@ public class CommunitiesFragment extends Fragment implements AsyncTaskListener {
         return view;
     }
 
-    /*
     // TO-DO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (listener != null) {
             listener.onFragmentInteraction(uri);
         }
     }
-    */
 
     @Override
     public void onAttach(Context context) {

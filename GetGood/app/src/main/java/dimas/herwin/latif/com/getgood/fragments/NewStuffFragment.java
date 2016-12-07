@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dimas.herwin.latif.com.getgood.R;
-import dimas.herwin.latif.com.getgood.fragments.items.Post;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
@@ -25,7 +24,7 @@ import dimas.herwin.latif.com.getgood.tasks.HttpTask;
  * Use the {@link NewStuffFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewStuffFragment extends Fragment implements AsyncTaskListener {
+public class NewStuffFragment extends Fragment {
 
     private OnFragmentInteractionListener listener;
     private View view;
@@ -51,7 +50,12 @@ public class NewStuffFragment extends Fragment implements AsyncTaskListener {
             if(networkInfo != null && networkInfo.isConnected()){
                 String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
 
-                new HttpTask(this).execute(url, "POST", "");
+                new HttpTask(new AsyncTaskListener() {
+                    @Override
+                    public void onTaskCompleted(String response) {
+                        handleGetPostTask(response);
+                    }
+                }).execute(url, "POST", "");
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -59,7 +63,7 @@ public class NewStuffFragment extends Fragment implements AsyncTaskListener {
         }
     }
 
-    public void onTaskCompleted(String response) {
+    public void handleGetPostTask(String response) {
         try {
             response = "[{\"id\" : 1, \"content\": \"This post is about a hobby you haven't discovered.\", \"image\": \"fight.png\", \"created_at\": \"Yesterday at 8:21 AM\", \"user_id\" : 1, \"user_name\": \"Oberyn Martell\", \"user_image\": \"oberyn-martell.jpg\"}, {\"id\" : 2, \"content\": \"Man, this coaching group is great.\", \"image\": \"random.png\", \"created_at\": \"15-11-2016 at 7:14 PM\", \"user_id\" : 2, \"user_name\": \"Lord Popo\", \"user_image\": \"popo.png\"}]";
 
@@ -91,14 +95,12 @@ public class NewStuffFragment extends Fragment implements AsyncTaskListener {
         return view;
     }
 
-    /*
     // TO-DO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (listener != null) {
             listener.onFragmentInteraction(uri);
         }
     }
-    */
 
     @Override
     public void onAttach(Context context) {

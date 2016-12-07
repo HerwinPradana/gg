@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
-public class SplashActivity extends AppCompatActivity implements AsyncTaskListener{
+public class SplashActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,12 @@ public class SplashActivity extends AppCompatActivity implements AsyncTaskListen
                     if(networkInfo != null && networkInfo.isConnected()){
                         String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/checkToken";
 
-                        new HttpTask(SplashActivity.this).execute(url, "GET", "", sharedPreferences.getString("token", ""));
+                        new HttpTask(new AsyncTaskListener() {
+                            @Override
+                            public void onTaskCompleted(String response) {
+                                SplashActivity.this.handleTokenTask(response);
+                            }
+                        }).execute(url, "GET", "", sharedPreferences.getString("token", ""));
                     }
                     else {
                         Log.e("NetworkInfo", "Not connected to a network.");
@@ -50,7 +55,7 @@ public class SplashActivity extends AppCompatActivity implements AsyncTaskListen
         }, 3000);
     }
 
-    public void onTaskCompleted(String response) {
+    public void handleTokenTask(String response) {
         try {
             JSONObject json = new JSONObject(response);
 

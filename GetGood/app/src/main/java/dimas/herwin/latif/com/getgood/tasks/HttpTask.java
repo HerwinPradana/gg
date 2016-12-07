@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class HttpTask extends AsyncTask<String, Void, String> {
 
-    AsyncTaskListener asyncTaskListener;
+    private AsyncTaskListener asyncTaskListener;
 
     public HttpTask(AsyncTaskListener listener){
         asyncTaskListener = listener;
