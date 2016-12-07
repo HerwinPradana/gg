@@ -126,6 +126,9 @@ public class LoginActivity extends AppCompatActivity{
                     // Forbidden
                     errorString += "\n" + getString(R.string.wrong_email_password);
                 }
+                else if(statusCode == 500){
+                    errorString += "\n"+ getString(R.string.error_server);
+                }
 
                 textViewMessages.setText(errorString);
             }
