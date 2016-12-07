@@ -1,6 +1,7 @@
 package dimas.herwin.latif.com.getgood.fragments.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,9 +70,9 @@ public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<Community
         private final ImageView imageView;
         private final Button    detailButton;
         private final Button    joinButon;
-        public Community        item;
+        private Community       item;
 
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
             this.view    = view;
             nameView     = (TextView) view.findViewById(R.id.name);
@@ -81,14 +82,16 @@ public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<Community
             joinButon    = (Button) view.findViewById(R.id.join);
         }
 
-        public void setItem(final Community item){
+        private void setItem(final Community item){
             this.item = item;
 
             nameView.setText(item.name);
             descView.setText(item.desc);
 
+            String server = context.getResources().getString(R.string.server_address);
+
             //Picasso.with(context).setLoggingEnabled(true);
-            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/communities/" + item.image).placeholder(R.mipmap.placeholder).into(imageView);
+            Picasso.with(context).load("http://" +  server + "/ggwp/public/images/communities/" + item.image).placeholder(R.mipmap.placeholder).into(imageView);
 
             detailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,7 +108,7 @@ public class CommunityRecyclerViewAdapter extends RecyclerView.Adapter<Community
             });
         }
 
-        public void cleanup(){
+        private void cleanup(){
             Picasso.with(context).cancelRequest(imageView);
             imageView.setImageResource(R.mipmap.placeholder);
         }

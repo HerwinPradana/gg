@@ -1,6 +1,7 @@
 package dimas.herwin.latif.com.getgood.fragments.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.plumillonforge.android.chipview.Chip;
+import com.plumillonforge.android.chipview.ChipView;
 import com.squareup.picasso.Picasso;
 
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
+import dimas.herwin.latif.com.getgood.fragments.items.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder> {
@@ -67,9 +72,10 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
         private final ImageView imageView;
         private final ImageView userImageView;
         private final TextView  userNameView;
-        public Post             item;
+        private final ChipView  tagsView;
+        private Post            item;
 
-        public ViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
             this.view       = view;
             contentView     = (TextView) view.findViewById(R.id.content);
@@ -77,21 +83,31 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<PostRecyclerVi
             imageView       = (ImageView) view.findViewById(R.id.image);
             userImageView   = (ImageView) view.findViewById(R.id.user_image);
             userNameView    = (TextView) view.findViewById(R.id.user_name);
+            tagsView        = (ChipView) view.findViewById(R.id.tags);
         }
 
-        public void setItem(Post item){
+        private void setItem(Post item){
             this.item = item;
 
             contentView.setText(item.content);
             createdAtView.setText(item.createdAt);
             userNameView.setText(item.userName);
 
+            if(item.isTutorial) {
+                List<Chip> chipList = new ArrayList<>();
+                chipList.add(new Tag("Tutorial"));
+
+                tagsView.setChipList(chipList);
+            }
+
+            String server = context.getResources().getString(R.string.server_address);
+
             //Picasso.with(context).setLoggingEnabled(true);
-            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/posts/" + item.image).into(imageView);
-            Picasso.with(context).load("http://192.168.43.111/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
+            Picasso.with(context).load("http://" +  server + "/ggwp/public/images/posts/" + item.image).into(imageView);
+            Picasso.with(context).load("http://" + server + "/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
         }
 
-        public void cleanup(){
+        private void cleanup(){
             Picasso.with(context).cancelRequest(imageView);
             imageView.setImageDrawable(null);
             userImageView.setImageResource(R.mipmap.placeholder);
