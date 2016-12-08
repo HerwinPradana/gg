@@ -62,14 +62,15 @@ public class FeedFragment extends Fragment {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post";
+                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/interests";
+                String parameters = "id=" + sharedPreferences.getString("user_id", "0");
 
                 new HttpTask(new AsyncTaskListener() {
                     @Override
                     public void onTaskCompleted(String response) {
                         handleGetPostTask(response);
                     }
-                }).execute(url, "GET", "", sharedPreferences.getString("token", ""));
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", ""));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -79,7 +80,6 @@ public class FeedFragment extends Fragment {
 
     public void handleGetPostTask(String response) {
         try {
-            Log.d("RESPONSE", response);
             JSONObject json = new JSONObject(response);
 
             if(!json.has("error")){
@@ -104,12 +104,14 @@ public class FeedFragment extends Fragment {
                     startActivity(intent);
                 }
                 else {
-                    Log.e("RESPONSE ERROR", json.getString("error"));
+                    Log.d("Response", response);
+                    Log.e("ResponseError", json.getString("error"));
                 }
             }
         }
         catch (JSONException e){
-            Log.e("Feed Fragment", e.getMessage());
+            Log.d("Response", response);
+            Log.e("FeedFragment", e.getMessage());
         }
     }
 

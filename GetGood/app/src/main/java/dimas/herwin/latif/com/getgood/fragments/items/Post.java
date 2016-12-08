@@ -47,7 +47,7 @@ public class Post {
 
                 if(!tag.isNull("background_color") && !tag.isNull("text_color"))
                     tagChips.add(new Tag(tag.getString("name"), tag.getString("background_color"), tag.getString("text_color")));
-                else if(tag.isNull("text_color"))
+                else if(!tag.isNull("background_color") && tag.isNull("text_color"))
                     tagChips.add(new Tag(tag.getString("name"), tag.getString("background_color")));
                 else
                     tagChips.add(new Tag(tag.getString("name")));

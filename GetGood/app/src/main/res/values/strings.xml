@@ -12,6 +12,7 @@
     <string name="wrong_email_password">You\'ve entered a wrong email or password.</string>
     <string name="email_already_used">This email has already been used.</string>
     <string name="title_activity_test_login">Sign in</string>
+    <string name="search">Search</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -31,7 +32,7 @@
     <string name="content_image">Content image</string>
     <string name="post">Post</string>
     <string name="feed">Feed</string>
-    <string name="new_stuff">New Stuff</string>
+    <string name="discover">Discover</string>
     <string name="communities">Communities</string>
     <string name="join">Join</string>
     <string name="take_a_look">Take a look</string>

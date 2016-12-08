@@ -1,6 +1,8 @@
 package dimas.herwin.latif.com.getgood.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -12,34 +14,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import dimas.herwin.latif.com.getgood.LoginActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewStuffFragment.OnFragmentInteractionListener} interface
+ * {@link DiscoveryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewStuffFragment#newInstance} factory method to
+ * Use the {@link DiscoveryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewStuffFragment extends Fragment {
+public class DiscoveryFragment extends Fragment {
 
     private OnFragmentInteractionListener listener;
     private View view;
+    private SharedPreferences sharedPreferences;
 
-    public NewStuffFragment() {
+    public DiscoveryFragment() {
         // Required empty public constructor
     }
 
-    public static NewStuffFragment newInstance() {
-        return new NewStuffFragment();
+    public static DiscoveryFragment newInstance() {
+        return new DiscoveryFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
     }
 
     private void loadTimeline() {
@@ -48,14 +59,15 @@ public class NewStuffFragment extends Fragment {
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
+                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/discovery";
+                String parameters = "id=" + sharedPreferences.getString("user_id", "0");
 
                 new HttpTask(new AsyncTaskListener() {
                     @Override
                     public void onTaskCompleted(String response) {
                         handleGetPostTask(response);
                     }
-                }).execute(url, "POST", "");
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", ""));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -65,28 +77,44 @@ public class NewStuffFragment extends Fragment {
 
     public void handleGetPostTask(String response) {
         try {
-            response = "[{\"id\" : 1, \"content\": \"This post is about a hobby you haven't discovered.\", \"image\": \"fight.png\", \"created_at\": \"Yesterday at 8:21 AM\", \"user_id\" : 1, \"user_name\": \"Oberyn Martell\", \"user_image\": \"oberyn-martell.jpg\"}, {\"id\" : 2, \"content\": \"Man, this coaching group is great.\", \"image\": \"random.png\", \"created_at\": \"15-11-2016 at 7:14 PM\", \"user_id\" : 2, \"user_name\": \"Lord Popo\", \"user_image\": \"popo.png\"}]";
+            JSONObject json = new JSONObject(response);
 
-            PostFragment postFragment = new PostFragment();
+            if(!json.has("error")){
+                JSONArray posts = json.getJSONArray("result");
 
-            Bundle args = new Bundle();
-            args.putString(PostFragment.ARG_JSON, response);
+                PostFragment postFragment = new PostFragment();
 
-            postFragment.setArguments(args);
+                Bundle args = new Bundle();
+                args.putString(PostFragment.ARG_JSON, posts.toString());
 
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.list_post, postFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+                postFragment.setArguments(args);
+
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.replace(R.id.list_post, postFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+            else {
+                // If token expires return to login.
+                if(json.getString("error").equals("token_not_provided") || json.getString("error").equals("token_expired")){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Log.d("Response", response);
+                    Log.e("ResponseError", json.getString("error"));
+                }
+            }
         }
-        catch (IllegalStateException error){
-            Log.e("Timeline Fragment", error.getMessage());
+        catch (JSONException e){
+            Log.d("Response", response);
+            Log.e("DiscoveryFragment", e.getMessage());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_feed, container, false);
+        view = inflater.inflate(R.layout.fragment_discovery, container, false);
 
         if(savedInstanceState == null)
             loadTimeline();

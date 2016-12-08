@@ -12,13 +12,13 @@ import android.os.Bundle;
 
 import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
-import dimas.herwin.latif.com.getgood.fragments.NewStuffFragment;
+import dimas.herwin.latif.com.getgood.fragments.DiscoveryFragment;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
 import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
 import dimas.herwin.latif.com.getgood.fragments.items.Community;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
 
-public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, NewStuffFragment.OnFragmentInteractionListener, CommunitiesFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener, CommunityFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, DiscoveryFragment.OnFragmentInteractionListener, CommunitiesFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener, CommunityFragment.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private FeedFragment        feedFragment;
-        private NewStuffFragment    newStuffFragment;
+        private DiscoveryFragment   discoveryFragment;
         private CommunitiesFragment communitiesFragment;
 
         private SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             feedFragment        = FeedFragment.newInstance();
-            newStuffFragment    = NewStuffFragment.newInstance();
+            discoveryFragment   = DiscoveryFragment.newInstance();
             communitiesFragment = CommunitiesFragment.newInstance();
         }
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
                 case 0:
                     return feedFragment;
                 case 1:
-                    return newStuffFragment;
+                    return discoveryFragment;
                 case 2:
                     return communitiesFragment;
                 default:
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
                 case 0:
                     return getString(R.string.feed);
                 case 1:
-                    return getString(R.string.new_stuff);
+                    return getString(R.string.discover);
                 case 2:
                     return getString(R.string.communities);
             }

@@ -75,7 +75,8 @@ public class SplashActivity extends AppCompatActivity{
             Log.e("JSONException", "Invalid string response.");
         }
         catch(Exception e){
-            Log.e("Response", response);
+            if(!response.equals(""))
+                Log.e("Response", response);
             Log.e("SplashActivity", e.getMessage());
         }
     }
