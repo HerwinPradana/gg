@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Get Good</string>
     <string name="app_pref">GG_PREFERENCES</string>
-    <string name="server_address">192.168.122.1</string>
+    <string name="server_address">192.168.43.163</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -12,7 +12,9 @@
     <string name="wrong_email_password">You\'ve entered a wrong email or password.</string>
     <string name="email_already_used">This email has already been used.</string>
     <string name="title_activity_test_login">Sign in</string>
+    <string name="register_now">Register now</string>
     <string name="search">Search</string>
+    <string name="or">or</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

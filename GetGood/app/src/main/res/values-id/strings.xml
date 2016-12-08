@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name">Nama</string>
+    <string name="login">Masuk</string>
+    <string name="login_failed">Gagal Masuk</string>
+    <string name="signup">Daftar</string>
+    <string name="register_now">Daftar Sekarang</string>
+    <string name="or">atau</string>
+</resources>

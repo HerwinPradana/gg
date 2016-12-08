@@ -1,103 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="dimas.herwin.latif.com.getgood.LoginActivity"
-    android:orientation="vertical"
-    android:backgroundTint="?android:attr/colorBackground">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_marginTop="25dp"
+            android:id="@+id/loginTopView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/colorPrimary"
             android:padding="16dp">
-            <ImageView
+            <LinearLayout
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/logo_horizontal"
-                android:contentDescription="@string/app_name"/>
-        </LinearLayout>
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/logo_horizontal"
+                    android:contentDescription="@string/app_name"/>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <EditText
-                android:id="@+id/email"
+            <LinearLayout
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:textColorHint="@color/white"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/white"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/password"
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:textColorHint="@color/white"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/white"/>
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:textColorHint="@color/white"
+                    android:inputType="textPassword"
+                    />
+                <LinearLayout
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+                    <Button
+                        android:id="@+id/login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login"
+                        android:onClick="login"
+                        android:background="@color/red_800"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:textColorHint="@color/white"
-                android:inputType="textPassword"
-                />
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/or"
+                    android:textSize="16dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:weightSum="1">
                 <Button
-                    android:id="@+id/login"
-                    android:layout_width="match_parent"
+                    android:id="@+id/signup"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/login"
-                    android:onClick="login"
-                    android:background="@color/red_800"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+                    android:text="@string/register_now"
+                    android:onClick="signup"
+                    android:background="@color/green_500"
+                    android:textColor="@color/white"
+                    android:layout_weight="0.14" />
+            </LinearLayout>d
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <TextView
+        <LinearLayout
+            android:id="@+id/loginBottomView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="atau"
-            android:textSize="20dp"
-            android:textAlignment="center" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:weightSum="1">
-        <Button
-            android:id="@+id/signup"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="@string/register_now_id"
-            android:onClick="signup"
-            android:background="@color/green_500"
-            android:textColor="@color/white"
-            android:layout_weight="0.14" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:background="@color/colorPrimary"
+            android:padding="16dp">
 
-    <TextView
-        android:id="@+id/errors"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/errors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
