@@ -6,56 +6,98 @@
     tools:context="dimas.herwin.latif.com.getgood.LoginActivity"
     android:orientation="vertical"
     android:backgroundTint="?android:attr/colorBackground">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:padding="16dp">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/logo_horizontal"
-            android:contentDescription="@string/app_name"/>
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/colorPrimary"
         android:padding="16dp">
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"/>
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"/>
         <LinearLayout
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
-            <Button
-                android:id="@+id/login"
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <ImageView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:onClick="login" />
-            <Button
-                android:id="@+id/signup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/signup"
-                android:onClick="signup" />
+                android:src="@mipmap/logo_horizontal"
+                android:contentDescription="@string/app_name"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/errors"
+        <LinearLayout
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textColorHint="@color/white"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                android:inputType="textPassword"
+                />
+            <LinearLayout
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login"
+                    android:onClick="login"
+                    android:background="@color/red_800"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="atau"
+            android:textSize="20dp"
+            android:textAlignment="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="1">
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/register_now_id"
+            android:onClick="signup"
+            android:background="@color/green_500"
+            android:textColor="@color/white"
+            android:layout_weight="0.14" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/errors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
