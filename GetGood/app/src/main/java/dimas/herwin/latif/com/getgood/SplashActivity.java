@@ -64,7 +64,11 @@ public class SplashActivity extends AppCompatActivity{
                 startActivity(intent);
             }
             else {
-                if(json.getString("error").equals("token_not_provided") || json.getString("error").equals("token_expired")){
+                boolean notProvided = json.getString("error").equals("token_not_provided");
+                boolean expired     = json.getString("error").equals("token_expired");
+                boolean notFound    = json.getString("error").equals("user_not_found");
+
+                if(notProvided || expired || notFound){
                     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
@@ -75,8 +79,11 @@ public class SplashActivity extends AppCompatActivity{
             Log.e("JSONException", "Invalid string response.");
         }
         catch(Exception e){
-            if(!response.equals(""))
+            if(response == null)
+                Log.e("SplashActivity", "Empty Response");
+            else if(!response.equals(""))
                 Log.e("Response", response);
+
             Log.e("SplashActivity", e.getMessage());
         }
     }

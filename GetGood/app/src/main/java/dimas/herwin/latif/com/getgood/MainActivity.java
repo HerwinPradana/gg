@@ -35,8 +35,17 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
             viewPager.setAdapter(sectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        if(tabLayout != null)
+        if(tabLayout != null) {
             tabLayout.setupWithViewPager(viewPager);
+
+            TabLayout.Tab feedTab       = tabLayout.getTabAt(0);
+            TabLayout.Tab discoveryTab  = tabLayout.getTabAt(1);
+            TabLayout.Tab communityTab  = tabLayout.getTabAt(2);
+
+            if(feedTab != null)      feedTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
+            if(discoveryTab != null) discoveryTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
+            if(communityTab != null) communityTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
+        }
     }
 
     public void onFragmentInteraction(Uri uri){
@@ -88,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
             return 3;
         }
 
+        /* Uncomment to show text below icons.
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -98,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
                 case 2:
                     return getString(R.string.communities);
             }
+
             return null;
         }
+        */
     }
 }

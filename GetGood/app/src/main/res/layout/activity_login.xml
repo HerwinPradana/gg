@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -77,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/or"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:textAlignment="center"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -89,14 +88,13 @@
                 android:weightSum="1">
                 <Button
                     android:id="@+id/signup"
-                    android:layout_width="120dp"
+                    android:layout_width="150sp"
                     android:layout_height="wrap_content"
                     android:text="@string/register_now"
                     android:onClick="signup"
                     android:background="@color/green_500"
-                    android:textColor="@color/white"
-                    android:layout_weight="0.14" />
-            </LinearLayout>d
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/loginBottomView"
@@ -109,7 +107,8 @@
             <TextView
                 android:id="@+id/errors"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

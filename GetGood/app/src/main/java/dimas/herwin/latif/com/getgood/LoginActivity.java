@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity{
                 editor.putString("token", loginData.getString("token"));
                 editor.putString("user_id", user.getString("id"));
                 editor.putString("user_name", user.getString("name"));
-//                editor.putString("user_image", user.getString("image"));
+                editor.putString("user_image", user.getString("image"));
                 editor.apply();
 
                 Intent intent = new Intent(this, MainActivity.class);
@@ -129,6 +129,8 @@ public class LoginActivity extends AppCompatActivity{
                 else if(statusCode == 500){
                     errorString += "\n"+ getString(R.string.error_server);
                 }
+
+                textViewMessages.setText(errorString);
             }
         }
         catch (JSONException e){

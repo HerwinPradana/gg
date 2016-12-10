@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Get Good</string>
     <string name="app_pref">GG_PREFERENCES</string>
-    <string name="server_address">192.168.43.163</string>
+    <string name="server_address">192.168.122.1</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
