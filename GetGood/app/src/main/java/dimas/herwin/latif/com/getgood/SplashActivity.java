@@ -56,6 +56,11 @@ public class SplashActivity extends AppCompatActivity{
     }
 
     public void handleTokenTask(String response) {
+        if(response == null){
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         try {
             JSONObject json = new JSONObject(response);
 

@@ -19,11 +19,13 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     private final View view;
     private final TextView contentView;
     private final TextView  createdAtView;
-    private final ImageView imageView;
     private final ImageView userImageView;
     private final TextView  userNameView;
-    private final ChipView tagsView;
-    private Post  item;
+    private final ChipView  tagsView;
+    private final ImageView mainImageView;
+    private final ImageView subImageView1;
+    private final ImageView subImageView2;
+    private Post            item;
 
     public PostViewHolder(View view, Context context) {
         super(view);
@@ -32,10 +34,12 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         this.view       = view;
         contentView     = (TextView) view.findViewById(R.id.content);
         createdAtView   = (TextView) view.findViewById(R.id.created_at);
-        imageView       = (ImageView) view.findViewById(R.id.image);
         userImageView   = (ImageView) view.findViewById(R.id.user_image);
         userNameView    = (TextView) view.findViewById(R.id.user_name);
         tagsView        = (ChipView) view.findViewById(R.id.tags);
+        mainImageView   = (ImageView) view.findViewById(R.id.main_image);
+        subImageView1   = (ImageView) view.findViewById(R.id.sub_image_1);
+        subImageView2   = (ImageView) view.findViewById(R.id.sub_image_2);
 
         tagsView.setAdapter(new TagChipViewAdapter(context));
     }
@@ -47,20 +51,36 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         createdAtView.setText(item.createdAt);
         userNameView.setText(item.userName);
 
+        //Picasso.with(context).setLoggingEnabled(true);
+        String server = context.getResources().getString(R.string.server_address);
+        Picasso.with(context).load("http://" + server + "/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
+
         if(!item.tagChips.isEmpty())
             tagsView.setChipList(item.tagChips);
 
-        String server = context.getResources().getString(R.string.server_address);
+        if(!item.imageList.isEmpty()) {
+            int nImages = item.imageList.size();
 
-        //Picasso.with(context).setLoggingEnabled(true);
-        Picasso.with(context).load("http://" +  server + "/ggwp/public/images/posts/" + item.image).into(imageView);
-        Picasso.with(context).load("http://" + server + "/ggwp/public/images/users/" + item.userImage).placeholder(R.mipmap.placeholder).into(userImageView);
+            Picasso.with(context).load("http://" + server + "/ggwp/public/images/posts/" + item.imageList.get(0)).into(mainImageView);
+
+            if(nImages > 1)
+                Picasso.with(context).load("http://" + server + "/ggwp/public/images/posts/" + item.imageList.get(1)).into(subImageView1);
+
+            if(nImages > 2)
+                Picasso.with(context).load("http://" + server + "/ggwp/public/images/posts/" + item.imageList.get(2)).into(subImageView2);
+        }
     }
 
     public void cleanup(){
-        Picasso.with(context).cancelRequest(imageView);
-        imageView.setImageDrawable(null);
         userImageView.setImageResource(R.mipmap.placeholder);
+
+        Picasso.with(context).cancelRequest(mainImageView);
+        Picasso.with(context).cancelRequest(subImageView1);
+        Picasso.with(context).cancelRequest(subImageView2);
+
+        mainImageView.setImageDrawable(null);
+        subImageView1.setImageDrawable(null);
+        subImageView2.setImageDrawable(null);
     }
 
     public View getView(){

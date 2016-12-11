@@ -21,7 +21,8 @@ public class Post {
     public  final String     userName;
     public  final String     userImage;
 
-    public  final List<Chip> tagChips;
+    public  final List<Chip>    tagChips;
+    public  final List<String>  imageList;
 
     public Post(JSONObject post){
         id          = post.optString("id");
@@ -29,7 +30,8 @@ public class Post {
         image       = post.optString("image");
         createdAt   = post.optString("created_at");
 
-        tagChips = new ArrayList<>();
+        tagChips    = new ArrayList<>();
+        imageList   = new ArrayList<>();
 
         if(post.optInt("is_tutorial") == 1)
             tagChips.add(new Tag("Tutorial"));
@@ -38,6 +40,7 @@ public class Post {
         try {
             user = post.getJSONObject("user");
 
+            // Build tags
             JSONArray  tags = post.getJSONArray("tags");
             JSONObject tag;
 
@@ -52,9 +55,20 @@ public class Post {
                 else
                     tagChips.add(new Tag(tag.getString("name")));
             }
+
+            // Build images
+            JSONArray  images = post.getJSONArray("images");
+            JSONObject image;
+
+            int nImages = images.length();
+            for (int i = 0; i < nImages; i++) {
+                image = images.getJSONObject(i);
+                imageList.add(image.getString("file"));
+            }
         }
         catch (JSONException e){
             Log.e("Post", "JSONException");
+            Log.e("JSONException", e.getMessage());
         }
 
         userId      = user.optString("id");
