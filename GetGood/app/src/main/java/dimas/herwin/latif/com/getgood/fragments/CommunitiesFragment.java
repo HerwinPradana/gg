@@ -55,7 +55,7 @@ public class CommunitiesFragment extends Fragment{
                     public void onTaskCompleted(String response) {
                         handleGetCommunitiesTask(response);
                     }
-                }).execute(url, "POST", "");
+                }).execute(url, "POST", null);
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");

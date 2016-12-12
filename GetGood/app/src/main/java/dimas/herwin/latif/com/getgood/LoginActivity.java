@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     public void login(View view){
-        textViewMessages.setText("");
+        textViewMessages.setText(null);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo                 = connectivityManager.getActiveNetworkInfo();

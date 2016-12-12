@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity{
                             public void onTaskCompleted(String response) {
                                 SplashActivity.this.handleTokenTask(response);
                             }
-                        }).execute(url, "GET", "", sharedPreferences.getString("token", ""));
+                        }).execute(url, "GET", null, sharedPreferences.getString("token", null));
                     }
                     else {
                         Log.e("NetworkInfo", "Not connected to a network.");
@@ -84,11 +84,6 @@ public class SplashActivity extends AppCompatActivity{
             Log.e("JSONException", "Invalid string response.");
         }
         catch(Exception e){
-            if(response == null)
-                Log.e("SplashActivity", "Empty Response");
-            else if(!response.equals(""))
-                Log.e("Response", response);
-
             Log.e("SplashActivity", e.getMessage());
         }
     }

@@ -9,16 +9,16 @@ public class Tag implements Chip {
     private String textColor        = "#FFFFFF";
     private String backgroundColor  = "#F44336";
 
-    public Tag(String name){
+    Tag(String name){
         this.name = name;
     }
 
-    public Tag(String name, String backgroundColor){
+    Tag(String name, String backgroundColor){
         this(name);
         this.backgroundColor = backgroundColor;
     }
 
-    public Tag(String name, String backgroundColor, String textColor){
+    Tag(String name, String backgroundColor, String textColor){
         this(name, backgroundColor);
         this.textColor = textColor;
     }

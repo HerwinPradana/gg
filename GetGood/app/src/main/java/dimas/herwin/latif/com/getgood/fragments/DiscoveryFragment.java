@@ -67,7 +67,7 @@ public class DiscoveryFragment extends Fragment {
                     public void onTaskCompleted(String response) {
                         handleGetPostTask(response);
                     }
-                }).execute(url, "POST", parameters, sharedPreferences.getString("token", ""));
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");

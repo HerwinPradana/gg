@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import dimas.herwin.latif.com.getgood.LoginActivity;
+import dimas.herwin.latif.com.getgood.ProfileActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
@@ -41,6 +42,7 @@ public class FeedFragment extends Fragment {
     private OnFragmentInteractionListener listener;
     private View view;
     private SharedPreferences sharedPreferences;
+    private String userId = null;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -54,6 +56,9 @@ public class FeedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+
+        if(getArguments() != null)
+            userId = getArguments().getString(ProfileActivity.USER_ID, null);
     }
 
     private void loadFeeds() {
@@ -63,14 +68,15 @@ public class FeedFragment extends Fragment {
 
             if(networkInfo != null && networkInfo.isConnected()){
                 String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/interests";
-                String parameters = "id=" + sharedPreferences.getString("user_id", "0");
+                String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
+                String parameters = "id=" + userId;
 
                 new HttpTask(new AsyncTaskListener() {
                     @Override
                     public void onTaskCompleted(String response) {
                         handleGetPostTask(response);
                     }
-                }).execute(url, "POST", parameters, sharedPreferences.getString("token", ""));
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -119,10 +125,12 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        String image = sharedPreferences.getString("user_image", "");
+        String image = sharedPreferences.getString("user_image", null);
 
-        ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
-        Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
+        if(image != null) {
+            ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
+            Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
+        }
 
         if(savedInstanceState == null)
             loadFeeds();

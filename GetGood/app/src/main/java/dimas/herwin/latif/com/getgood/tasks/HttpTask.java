@@ -23,7 +23,7 @@ public class HttpTask extends AsyncTask<String, Void, String> {
         try{
             String method = parameters[1];
             String params = parameters[2];
-            String target = (method.equals("GET"))? parameters[0] + "?" + params : parameters[0];
+            String target = (method.equals("GET") && params != null)? parameters[0] + "?" + params : parameters[0];
 
             URL url = new URL(target);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -34,10 +34,12 @@ public class HttpTask extends AsyncTask<String, Void, String> {
 
             if(parameters.length > 3) {
                 String token = parameters[3];
-                conn.setRequestProperty("Authorization", "bearer " + token);
+
+                if(token != null)
+                    conn.setRequestProperty("Authorization", "bearer " + token);
             }
 
-            if(method.equals("POST")){
+            if(method.equals("POST") && params != null){
                 conn.setDoOutput(true);
                 DataOutputStream writer = new DataOutputStream(conn.getOutputStream());
                 writer.writeBytes(params);

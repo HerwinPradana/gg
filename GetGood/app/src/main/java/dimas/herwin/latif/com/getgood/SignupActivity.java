@@ -1,6 +1,5 @@
 package dimas.herwin.latif.com.getgood;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +44,8 @@ public class SignupActivity extends AppCompatActivity{
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity{
     }
 
     public void signup(View view){
-        textViewErrors.setText("");
+        textViewErrors.setText(null);
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo                 = connectivityManager.getActiveNetworkInfo();

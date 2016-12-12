@@ -1,6 +1,7 @@
 package dimas.herwin.latif.com.getgood.fragments.holders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.plumillonforge.android.chipview.ChipView;
 import com.squareup.picasso.Picasso;
 
+import dimas.herwin.latif.com.getgood.ProfileActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.fragments.adapters.TagChipViewAdapter;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
@@ -50,6 +52,17 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
         contentView.setText(item.content);
         createdAtView.setText(item.createdAt);
         userNameView.setText(item.userName);
+
+        final String userId = item.userId;
+        userNameView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfileActivity.class);
+                intent.putExtra(ProfileActivity.USER_ID, userId);
+
+                context.startActivity(intent);
+            }
+        });
 
         //Picasso.with(context).setLoggingEnabled(true);
         String server = context.getResources().getString(R.string.server_address);
