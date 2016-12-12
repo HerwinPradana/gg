@@ -67,7 +67,8 @@ public class FeedFragment extends Fragment {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/interests";
+                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/";
+                url               = (this.userId == null)? url + "interests" : url + "users";
                 String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
                 String parameters = "id=" + userId;
 

@@ -8,20 +8,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.plumillonforge.android.chipview.ChipView;
 import com.squareup.picasso.Picasso;
 
 import dimas.herwin.latif.com.getgood.R;
+import dimas.herwin.latif.com.getgood.fragments.adapters.TagChipViewAdapter;
 import dimas.herwin.latif.com.getgood.fragments.items.Community;
 
 public class CommunityViewHolder extends RecyclerView.ViewHolder {
     private Context context;
 
-    private final View view;
-    private final TextView nameView;
+    private final View      view;
+    private final TextView  nameView;
     private final TextView  descView;
     private final ImageView imageView;
-    private final Button detailButton;
+    private final ChipView  tagsView;
+    private final Button    detailButton;
     private final Button    joinButon;
+
     private Community item;
 
     public CommunityViewHolder(View view, Context context) {
@@ -32,8 +36,12 @@ public class CommunityViewHolder extends RecyclerView.ViewHolder {
         nameView     = (TextView) view.findViewById(R.id.name);
         descView     = (TextView) view.findViewById(R.id.desc);
         imageView    = (ImageView) view.findViewById(R.id.image);
+        tagsView     = (ChipView) view.findViewById(R.id.tags);
+
         detailButton = (Button) view.findViewById(R.id.detail);
         joinButon    = (Button) view.findViewById(R.id.join);
+
+        tagsView.setAdapter(new TagChipViewAdapter(context));
     }
 
     public void setItem(final Community item){
@@ -46,6 +54,9 @@ public class CommunityViewHolder extends RecyclerView.ViewHolder {
 
         //Picasso.with(context).setLoggingEnabled(true);
         Picasso.with(context).load("http://" +  server + "/ggwp/public/images/communities/" + item.image).placeholder(R.mipmap.placeholder).into(imageView);
+
+        if(!item.tagChips.isEmpty())
+            tagsView.setChipList(item.tagChips);
 
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override

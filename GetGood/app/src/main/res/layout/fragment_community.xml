@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:chip="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
@@ -42,6 +43,7 @@
                 android:text="@string/dummy_community"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,6 +74,16 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Tags -->
+    <com.plumillonforge.android.chipview.ChipView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        chip:chip_side_padding="10dp">
+
+    </com.plumillonforge.android.chipview.ChipView>
     <View
         android:background="#999"
         android:layout_width="match_parent"

@@ -1,6 +1,8 @@
 package dimas.herwin.latif.com.getgood.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -12,9 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import dimas.herwin.latif.com.getgood.LoginActivity;
+import dimas.herwin.latif.com.getgood.ProfileActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +38,8 @@ public class CommunitiesFragment extends Fragment{
 
     private OnFragmentInteractionListener listener;
     private View view;
+    private SharedPreferences sharedPreferences;
+    private String userId = null;
 
     public CommunitiesFragment() {
         // Required empty public constructor
@@ -40,6 +52,10 @@ public class CommunitiesFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+
+        if(getArguments() != null)
+            userId = getArguments().getString(ProfileActivity.USER_ID, null);
     }
 
     private void loadFeeds() {
@@ -48,14 +64,21 @@ public class CommunitiesFragment extends Fragment{
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/auth/login?email=herwinpradana@gmail.com";
+                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/";
+                if(this.userId == null)
+                    url += "get";
+                else
+                    url += "users";
+
+                String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
+                String parameters = "id=" + userId;
 
                 new HttpTask(new AsyncTaskListener() {
                     @Override
                     public void onTaskCompleted(String response) {
                         handleGetCommunitiesTask(response);
                     }
-                }).execute(url, "POST", null);
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -65,21 +88,37 @@ public class CommunitiesFragment extends Fragment{
 
     public void handleGetCommunitiesTask(String response) {
         try {
-            response = "[{\"id\" : 1, \"name\": \"Archery Community\", \"desc\": \"We do traditional archery.\", \"image\": \"archery.jpg\"}]";
+            JSONObject json = new JSONObject(response);
 
-            CommunityFragment communityFragment = new CommunityFragment();
+            if(!json.has("error")) {
+                JSONArray communities = json.getJSONArray("result");
 
-            Bundle args = new Bundle();
-            args.putString(CommunityFragment.ARG_JSON, response);
+                CommunityFragment communityFragment = new CommunityFragment();
 
-            communityFragment.setArguments(args);
+                Bundle args = new Bundle();
+                args.putString(CommunityFragment.ARG_JSON, communities.toString());
 
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.replace(R.id.list_community, communityFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+                communityFragment.setArguments(args);
+
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.replace(R.id.list_community, communityFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+            else {
+                // If token expires return to login.
+                if(json.getString("error").equals("token_not_provided") || json.getString("error").equals("token_expired")){
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Log.d("Response", response);
+                    Log.e("ResponseError", json.getString("error"));
+                }
+            }
         }
-        catch (IllegalStateException error){
+        catch (JSONException error){
+            Log.d("Response", response);
             Log.e("Communities Fragment", error.getMessage());
         }
     }
