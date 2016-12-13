@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Get Good</string>
     <string name="app_pref">GG_PREFERENCES</string>
-    <string name="server_address">192.168.122.1</string>
+    <string name="server_address">192.168.43.163</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -45,4 +45,9 @@
     <string name="dummy_user">Herwin Pradana</string>
     <string name="dummy_date">28 November at 20:20</string>
     <string name="dummy_community">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</string>
+
+    <!-- Menu strings -->
+    <string name="menu_profile">Profile</string>
+    <string name="menu_logout">Logout</string>
+    <string name="title_activity_post">PostActivity</string>
 </resources>

@@ -1,7 +1,11 @@
 package dimas.herwin.latif.com.getgood;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -9,6 +13,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
@@ -42,11 +51,78 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
             TabLayout.Tab discoveryTab  = tabLayout.getTabAt(1);
             TabLayout.Tab communityTab  = tabLayout.getTabAt(2);
 
-            if(feedTab != null)      feedTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
-            if(discoveryTab != null) discoveryTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
-            if(communityTab != null) communityTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
+            if(feedTab != null) {
+                feedTab.setIcon(R.drawable.ic_home_black_24dp);
+                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.white, null));
+            }
+            if(discoveryTab != null) {
+                discoveryTab.setIcon(R.drawable.ic_explore_black_24dp);
+                discoveryTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.red_800, null));
+            }
+            if(communityTab != null) {
+                communityTab.setIcon(R.drawable.community);
+                communityTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.red_800, null));
+            }
+
+            tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager){
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    super.onTabSelected(tab);
+                    int color = ResourcesCompat.getColor(getResources(), R.color.white, null);
+                    tab.getIcon().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    super.onTabUnselected(tab);
+                    int color = ResourcesCompat.getColor(getResources(), R.color.red_800, null);
+                    tab.getIcon().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    super.onTabReselected(tab);
+                }
+            });
+        }
+
+        // Add Post Action Button Event Handler
+//        Button addPostBtn = (Button) findViewById(R.id.add_post_action_btn);
+//        final Intent post_activity = new Intent(this, PostActivity.class);
+//        addPostBtn.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                startActivity(post_activity);
+//            }
+//        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            case R.id.logout:
+//                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
+
+//    public void logout(){
+//        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+//        sharedPreferences.edit().clear().commit();
+//
+//        startActivity(new Intent(this, LoginActivity.class));
+//    }
 
     public void onFragmentInteraction(Uri uri){
 
@@ -97,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
             return 3;
         }
 
-        /* Uncomment to show text below icons.
+        // Show text below icons.
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -111,6 +187,5 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
 
             return null;
         }
-        */
     }
 }
