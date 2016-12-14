@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
             if(feedTab != null) {
                 feedTab.setIcon(R.drawable.ic_home_black_24dp);
-                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.white, null));
+                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.red_800, null));
             }
             if(discoveryTab != null) {
                 discoveryTab.setIcon(R.drawable.ic_explore_black_24dp);
@@ -171,18 +171,18 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Show text below icons.
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.feed);
-                case 1:
-                    return getString(R.string.discover);
-                case 2:
-                    return getString(R.string.communities);
-            }
-
-            return null;
-        }
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            switch (position) {
+//                case 0:
+//                    return getString(R.string.feed);
+//                case 1:
+//                    return getString(R.string.discover);
+//                case 2:
+//                    return getString(R.string.communities);
+//            }
+//
+//            return null;
+//        }
     }
 }
