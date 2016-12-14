@@ -16,6 +16,7 @@
     <string name="search">Search</string>
     <string name="or">or</string>
     <string name="about_me">About Me</string>
+    <string name="no_posts">No Posts</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
