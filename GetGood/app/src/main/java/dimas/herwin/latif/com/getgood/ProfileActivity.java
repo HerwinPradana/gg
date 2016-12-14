@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
@@ -50,6 +51,19 @@ public class ProfileActivity extends AppCompatActivity implements FeedFragment.O
             if(discoveryTab != null) discoveryTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
             if(communityTab != null) communityTab.setIcon(R.drawable.ic_arrow_downward_black_24dp);
         }
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onFragmentInteraction(Uri uri){

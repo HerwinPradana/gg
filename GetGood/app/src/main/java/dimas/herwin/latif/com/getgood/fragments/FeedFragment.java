@@ -7,12 +7,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -22,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import dimas.herwin.latif.com.getgood.LoginActivity;
+import dimas.herwin.latif.com.getgood.PostActivity;
 import dimas.herwin.latif.com.getgood.ProfileActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
@@ -43,6 +46,8 @@ public class FeedFragment extends Fragment {
     private View view;
     private SharedPreferences sharedPreferences;
     private String userId = null;
+
+    FloatingActionButton addPostBtn;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -126,15 +131,26 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        String image = sharedPreferences.getString("user_image", null);
+//        String image = sharedPreferences.getString("user_image", null);
 
-        if(image != null) {
-            ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
-            Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
-        }
+//        if(image != null) {
+//            ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
+//            Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
+//        }
 
         if(savedInstanceState == null)
             loadFeeds();
+
+
+        // Add Post Action Button Event Handler
+        addPostBtn = (FloatingActionButton) view.findViewById(R.id.add_post_action_btn);
+        if(addPostBtn != null) {
+            addPostBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), PostActivity.class));
+                }
+            });
+        }
 
         // Inflate the layout for this fragment
         return view;

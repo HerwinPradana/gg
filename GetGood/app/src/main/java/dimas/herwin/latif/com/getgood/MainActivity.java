@@ -27,7 +27,13 @@ import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
 import dimas.herwin.latif.com.getgood.fragments.items.Community;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
 
-public class MainActivity extends AppCompatActivity implements  FeedFragment.OnFragmentInteractionListener, DiscoveryFragment.OnFragmentInteractionListener, CommunitiesFragment.OnFragmentInteractionListener, PostFragment.OnListFragmentInteractionListener, CommunityFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity
+        implements
+        FeedFragment.OnFragmentInteractionListener,
+        DiscoveryFragment.OnFragmentInteractionListener,
+        CommunitiesFragment.OnFragmentInteractionListener,
+        PostFragment.OnListFragmentInteractionListener,
+        CommunityFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +91,6 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
                 }
             });
         }
-
-        // Add Post Action Button Event Handler
-//        Button addPostBtn = (Button) findViewById(R.id.add_post_action_btn);
-//        final Intent post_activity = new Intent(this, PostActivity.class);
-//        addPostBtn.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                startActivity(post_activity);
-//            }
-//        });
     }
 
     @Override
@@ -110,19 +107,19 @@ public class MainActivity extends AppCompatActivity implements  FeedFragment.OnF
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
             case R.id.logout:
-//                logout();
+                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-//    public void logout(){
-//        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
-//        sharedPreferences.edit().clear().commit();
-//
-//        startActivity(new Intent(this, LoginActivity.class));
-//    }
+    public void logout(){
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 
     public void onFragmentInteraction(Uri uri){
 
