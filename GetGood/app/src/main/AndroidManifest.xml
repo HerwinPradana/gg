@@ -36,8 +36,7 @@
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".PostActivity"
-            android:label="@string/title_activity_post"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_post"></activity>
     </application>
 
 </manifest>

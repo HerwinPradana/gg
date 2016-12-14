@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity
     public void logout(){
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
         sharedPreferences.edit().clear().commit();
-
         startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     public void onFragmentInteraction(Uri uri){

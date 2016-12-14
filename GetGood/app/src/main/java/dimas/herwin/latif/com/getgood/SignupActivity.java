@@ -51,8 +51,7 @@ public class SignupActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -94,6 +93,8 @@ public class SignupActivity extends AppCompatActivity{
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.putExtra(LoginActivity.LOGIN_MESSAGE, getString(R.string.signup_succeed));
                 startActivity(intent);
+
+                finish();
             }
             else{
                 JSONObject error    = signupData.getJSONObject("error");

@@ -14,5 +14,8 @@
     tools:context="dimas.herwin.latif.com.getgood.PostActivity"
     tools:showIn="@layout/activity_post">
 
-
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="textStart" />
 </LinearLayout>
