@@ -50,8 +50,6 @@ public class ProfileActivity extends AppCompatActivity implements
     private ImageView   imageView;
     private ImageView   bannerView;
 
-    private SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements
         imageView   = (ImageView) findViewById(R.id.profile_image);
         bannerView  = (ImageView) findViewById(R.id.profile_banner);
 
-        sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
-
+        SharedPreferences   sharedPreferences   = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo         networkInfo         = connectivityManager.getActiveNetworkInfo();
 
@@ -144,34 +141,12 @@ public class ProfileActivity extends AppCompatActivity implements
                 }
             });
 
-            loadProfile();
         }
 
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void loadProfile() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if(networkInfo != null && networkInfo.isConnected()){
-            String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/";
-            url               = (this.userId == null)? url + "interests" : url + "users";
-            String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
-            String parameters = "id=" + userId;
-
-            new HttpTask(new AsyncTaskListener() {
-                @Override
-                public void onTaskCompleted(String response) {
-                    handleGetProfileTask(response);
-                }
-            }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
-        }
-        else {
-            Log.e("CONNECTION: ", "NOT CONNECTED");
-        }
-    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -194,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity implements
 
                 String server = getString(R.string.server_address);
                 Picasso.with(this).load("http://" + server + "/ggwp/public/images/users/" + user.getString("image")).placeholder(R.mipmap.placeholder).into(imageView);
-                Picasso.with(this).load("http://" + server + "/ggwp/public/images/banners/" + user.getString("banner")).placeholder(R.mipmap.placeholder).into(bannerView);
+                Picasso.with(this).load("http://" + server + "/ggwp/public/images/banners/" + user.getString("banner")).placeholder(R.mipmap.placeholder_banner).into(bannerView);
             }
             else {
                 // If token expires return to login.
@@ -209,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity implements
         }
         catch (JSONException e){
             Log.d("Response", response);
-            Log.e("FeedFragment", e.getMessage());
+            Log.e("ProfileActivity", e.getMessage());
         }
     }
 

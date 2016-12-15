@@ -14,7 +14,7 @@
         android:layout_gravity="top"
         android:adjustViewBounds="true"
         android:layout_marginBottom="-50dp"
-        android:src="@mipmap/placeholder_banner_beach"
+        android:src="@mipmap/placeholder_banner"
         android:scaleType="fitCenter"
         android:contentDescription="@string/content_image" />
     <LinearLayout

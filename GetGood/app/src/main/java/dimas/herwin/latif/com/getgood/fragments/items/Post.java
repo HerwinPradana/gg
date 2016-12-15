@@ -51,6 +51,20 @@ public class Post {
                 tagChips.add(new Tag(tag.getString("id"), tag.getString("name"), background, text));
             }
 
+            // Build tags
+            JSONArray  communities = post.getJSONArray("communities");
+            JSONObject community;
+
+            int nCommunities = communities.length();
+            for (int i = 0; i < nCommunities; i++) {
+                community = communities.getJSONObject(i);
+
+                String background   = (!community.isNull("background_color"))? community.getString("background_color") : null;
+                String text         = (!community.isNull("text_color"))? community.getString("text_color") : null;
+
+                tagChips.add(new Tag(community.getString("id"), community.getString("name"), background, text));
+            }
+
             // Build images
             JSONArray  images = post.getJSONArray("images");
             JSONObject image;
