@@ -21,6 +21,7 @@
     <string name="community">Community</string>
     <string name="tag_your_content">Tag your content.</string>
     <string name="share_with_communities">Share it with your communities.</string>
+    <string name="no_posts">No Posts</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
