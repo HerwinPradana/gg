@@ -140,7 +140,9 @@ public class LoginActivity extends AppCompatActivity{
             Log.e("JSONException", "Invalid string response.");
         }
         catch(Exception e){
-            Log.e("Response", response);
+            if(response != null)
+                Log.e("Response", response);
+
             Log.e("LoginActivity", e.getMessage());
         }
     }

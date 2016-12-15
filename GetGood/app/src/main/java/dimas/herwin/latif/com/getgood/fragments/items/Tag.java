@@ -4,28 +4,35 @@ import com.plumillonforge.android.chipview.Chip;
 
 public class Tag implements Chip {
 
+    private String id;
     private String name;
 
     private String textColor        = "#FFFFFF";
     private String backgroundColor  = "#F44336";
 
-    Tag(String name){
+    public Tag(String id, String name, String backgroundColor, String textColor){
+        this.id = id;
         this.name = name;
-    }
 
-    Tag(String name, String backgroundColor){
-        this(name);
-        this.backgroundColor = backgroundColor;
-    }
+        if(backgroundColor != null)
+            this.backgroundColor = backgroundColor;
 
-    Tag(String name, String backgroundColor, String textColor){
-        this(name, backgroundColor);
-        this.textColor = textColor;
+        if(textColor != null)
+            this.textColor = textColor;
     }
 
     @Override
     public String getText(){
         return name;
+    }
+
+    @Override
+    public String toString(){
+        return name;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public String getBackgroundColor(){

@@ -101,7 +101,6 @@ public class DiscoveryFragment extends Fragment {
                     startActivity(intent);
                 }
                 else {
-                    Log.d("Response", response);
                     Log.e("ResponseError", json.getString("error"));
                 }
             }

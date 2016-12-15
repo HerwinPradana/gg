@@ -64,21 +64,27 @@ public class CommunitiesFragment extends Fragment{
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/";
-                if(this.userId == null)
-                    url += "get";
-                else
-                    url += "users";
+                if(this.userId == null) {
+                    String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/get";
 
-                String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
-                String parameters = "id=" + userId;
+                    new HttpTask(new AsyncTaskListener() {
+                        @Override
+                        public void onTaskCompleted(String response) {
+                            handleGetCommunitiesTask(response);
+                        }
+                    }).execute(url, "POST", null, sharedPreferences.getString("token", null));
+                }
+                else {
+                    String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/users";
+                    String parameters = "id=" + userId;
 
-                new HttpTask(new AsyncTaskListener() {
-                    @Override
-                    public void onTaskCompleted(String response) {
-                        handleGetCommunitiesTask(response);
-                    }
-                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
+                    new HttpTask(new AsyncTaskListener() {
+                        @Override
+                        public void onTaskCompleted(String response) {
+                            handleGetCommunitiesTask(response);
+                        }
+                    }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
+                }
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -112,7 +118,6 @@ public class CommunitiesFragment extends Fragment{
                     startActivity(intent);
                 }
                 else {
-                    Log.d("Response", response);
                     Log.e("ResponseError", json.getString("error"));
                 }
             }

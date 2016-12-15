@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Get Good</string>
     <string name="app_pref">GG_PREFERENCES</string>
-    <string name="server_address">192.168.43.163</string>
+    <string name="server_address">192.168.122.1</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -16,6 +16,11 @@
     <string name="search">Search</string>
     <string name="or">or</string>
     <string name="about_me">About Me</string>
+    <string name="share_something">Share something.</string>
+    <string name="tag">Tag</string>
+    <string name="community">Community</string>
+    <string name="tag_your_content">Tag your content.</string>
+    <string name="share_with_communities">Share it with your communities.</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

@@ -1,21 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:chip="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context="dimas.herwin.latif.com.getgood.PostActivity">
+    <!-- Separator -->
+    <View
+        android:background="#bbb"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:id="@+id/content"
+        android:background="@null"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:gravity="top"
+        android:hint="@string/share_something"/>
+    <!-- Tags -->
+    <com.plumillonforge.android.chipview.ChipView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        chip:chip_side_padding="10dp">
 
+    </com.plumillonforge.android.chipview.ChipView>
+    <LinearLayout
+        android:id="@+id/tag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+        <!-- Separator -->
+        <View
+            android:background="#bbb"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <AutoCompleteTextView
+            android:id="@+id/tag"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="@string/tag_your_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/community_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+        <!-- Separator -->
+        <View
+            android:background="#bbb"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <AutoCompleteTextView
+            android:id="@+id/community"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="@string/share_with_communities"/>
+    </LinearLayout>
+    <!-- Separator -->
+    <View
+        android:background="#bbb"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/content_post" />
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="tag"
+            android:text="@string/tag"
+            android:drawableStart="@drawable/ic_add_black_24dp"/>
+        <View
+            android:background="#bbb"
+            android:layout_width="1px"
+            android:layout_height="match_parent"/>
+        <Button
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="community"
+            android:text="@string/community"
+            android:drawableStart="@drawable/ic_add_black_24dp"/>
+        <Button
+            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="post"
+            android:text="@string/post"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

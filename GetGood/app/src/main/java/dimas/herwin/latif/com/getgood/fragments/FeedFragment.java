@@ -72,17 +72,27 @@ public class FeedFragment extends Fragment {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/";
-                url               = (this.userId == null)? url + "interests" : url + "users";
-                String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
-                String parameters = "id=" + userId;
+                if(userId == null){
+                    String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/interests";
 
-                new HttpTask(new AsyncTaskListener() {
-                    @Override
-                    public void onTaskCompleted(String response) {
-                        handleGetPostTask(response);
-                    }
-                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
+                    new HttpTask(new AsyncTaskListener() {
+                        @Override
+                        public void onTaskCompleted(String response) {
+                            handleGetPostTask(response);
+                        }
+                    }).execute(url, "POST", null, sharedPreferences.getString("token", null));
+                }
+                else{
+                    String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/users";
+                    String parameters = "id=" + userId;
+
+                    new HttpTask(new AsyncTaskListener() {
+                        @Override
+                        public void onTaskCompleted(String response) {
+                            handleGetPostTask(response);
+                        }
+                    }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
+                }
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
@@ -116,7 +126,6 @@ public class FeedFragment extends Fragment {
                     startActivity(intent);
                 }
                 else {
-                    Log.d("Response", response);
                     Log.e("ResponseError", json.getString("error"));
                 }
             }

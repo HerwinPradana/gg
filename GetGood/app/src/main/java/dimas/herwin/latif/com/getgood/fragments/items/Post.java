@@ -33,9 +33,6 @@ public class Post {
         tagChips    = new ArrayList<>();
         imageList   = new ArrayList<>();
 
-        if(post.optInt("is_tutorial") == 1)
-            tagChips.add(new Tag("Tutorial"));
-
         JSONObject user = new JSONObject();
         try {
             user = post.getJSONObject("user");
@@ -48,12 +45,10 @@ public class Post {
             for (int i = 0; i < nTags; i++) {
                 tag = tags.getJSONObject(i);
 
-                if(!tag.isNull("background_color") && !tag.isNull("text_color"))
-                    tagChips.add(new Tag(tag.getString("name"), tag.getString("background_color"), tag.getString("text_color")));
-                else if(!tag.isNull("background_color") && tag.isNull("text_color"))
-                    tagChips.add(new Tag(tag.getString("name"), tag.getString("background_color")));
-                else
-                    tagChips.add(new Tag(tag.getString("name")));
+                String background   = (!tag.isNull("background_color"))? tag.getString("background_color") : null;
+                String text         = (!tag.isNull("text_color"))? tag.getString("text_color") : null;
+
+                tagChips.add(new Tag(tag.getString("id"), tag.getString("name"), background, text));
             }
 
             // Build images
