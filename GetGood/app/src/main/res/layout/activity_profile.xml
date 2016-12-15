@@ -14,7 +14,6 @@
         android:layout_gravity="top"
         android:adjustViewBounds="true"
         android:layout_marginBottom="-50dp"
-        android:maxHeight="100dp"
         android:src="@mipmap/placeholder_banner_beach"
         android:scaleType="fitCenter"
         android:contentDescription="@string/content_image" />

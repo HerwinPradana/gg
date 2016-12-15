@@ -1,25 +1,43 @@
 package dimas.herwin.latif.com.getgood;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import dimas.herwin.latif.com.getgood.fragments.AboutFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
-import dimas.herwin.latif.com.getgood.fragments.DiscoveryFragment;
 import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
 import dimas.herwin.latif.com.getgood.fragments.items.Community;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
+import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
+import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
 public class ProfileActivity extends AppCompatActivity implements
         FeedFragment.OnFragmentInteractionListener,
@@ -29,14 +47,41 @@ public class ProfileActivity extends AppCompatActivity implements
         CommunitiesFragment.OnFragmentInteractionListener {
 
     public final static String USER_ID = "dimas.herwin.latif.com.getgood.USER_ID";
-    private String userID = null;
+    private String userId = null;
+
+    private TextView    nameView;
+    private ImageView   imageView;
+    private ImageView   bannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        userID = getIntent().getStringExtra(USER_ID);
+        userId = getIntent().getStringExtra(USER_ID);
+
+        nameView    = (TextView) findViewById(R.id.profile_name);
+        imageView   = (ImageView) findViewById(R.id.profile_image);
+        bannerView  = (ImageView) findViewById(R.id.profile_banner);
+
+        SharedPreferences sharedPreferences     = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo         networkInfo         = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnected()){
+            String url    = "http://" + getString(R.string.server_address) + "/ggwp/public/api/user/profile";
+            String params = "id=" + userId;
+
+            new HttpTask(new AsyncTaskListener() {
+                @Override
+                public void onTaskCompleted(String response) {
+                    handleGetProfileTask(response);
+                }
+            }).execute(url, "POST", params, sharedPreferences.getString("token", null));
+        }
+        else {
+            Log.e("CONNECTION: ", "NOT CONNECTED");
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -57,15 +102,21 @@ public class ProfileActivity extends AppCompatActivity implements
 
             if(feedTab != null) {
                 feedTab.setIcon(R.drawable.ic_art_track_black_24dp);
-                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
+                Drawable icon = feedTab.getIcon();
+                if(icon != null)
+                    icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
             }
             if(communityTab != null) {
                 communityTab.setIcon(R.drawable.community);
-                communityTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
+                Drawable icon = communityTab.getIcon();
+                if(icon != null)
+                    icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
             }
             if(aboutTab != null) {
                 aboutTab.setIcon(R.drawable.ic_info_outline_black_24dp);
-                aboutTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
+                Drawable icon = aboutTab.getIcon();
+                if(icon != null)
+                    icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
             }
 
             tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager){
@@ -73,14 +124,18 @@ public class ProfileActivity extends AppCompatActivity implements
                 public void onTabSelected(TabLayout.Tab tab) {
                     super.onTabSelected(tab);
                     int color = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
-                    tab.getIcon().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    Drawable icon = tab.getIcon();
+                    if(icon != null)
+                        icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
                     super.onTabUnselected(tab);
                     int color = ResourcesCompat.getColor(getResources(), R.color.grey_500, null);
-                    tab.getIcon().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    Drawable icon = tab.getIcon();
+                    if(icon != null)
+                        icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
                 }
 
                 @Override
@@ -102,6 +157,36 @@ public class ProfileActivity extends AppCompatActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void handleGetProfileTask(String response) {
+        try {
+            JSONObject json = new JSONObject(response);
+
+            if(!json.has("error")){
+                JSONObject user = json.getJSONObject("result");
+
+                nameView.setText(user.getString("name"));
+
+                String server = getString(R.string.server_address);
+                Picasso.with(this).load("http://" + server + "/ggwp/public/images/users/" + user.getString("image")).placeholder(R.mipmap.placeholder).into(imageView);
+                Picasso.with(this).load("http://" + server + "/ggwp/public/images/banners/" + user.getString("banner")).placeholder(R.mipmap.placeholder).into(bannerView);
+            }
+            else {
+                // If token expires return to login.
+                if(json.getString("error").equals("token_not_provided") || json.getString("error").equals("token_expired")){
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Log.e("ResponseError", json.getString("error"));
+                }
+            }
+        }
+        catch (JSONException e){
+            Log.d("Response", response);
+            Log.e("FeedFragment", e.getMessage());
+        }
     }
 
     public void onFragmentInteraction(Uri uri){
@@ -133,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity implements
             aboutFragment       = AboutFragment.newInstance();
 
             Bundle feedBundle = new Bundle();
-            feedBundle.putString(USER_ID, userID);
+            feedBundle.putString(USER_ID, userId);
             feedFragment.setArguments(feedBundle);
         }
 
