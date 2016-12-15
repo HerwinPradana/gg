@@ -59,6 +59,10 @@ public class PostFragment extends Fragment {
 
             recyclerView = (RecyclerView) list;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            if(postList.items.size() == 0)
+                view.findViewById(R.id.no_posts).setVisibility(View.VISIBLE);
+
             recyclerView.setAdapter(new PostRecyclerViewAdapter(postList.items, listener, context));
         }
         return view;
@@ -82,11 +86,11 @@ public class PostFragment extends Fragment {
         listener = null;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        recyclerView.setAdapter(null);
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        recyclerView.setAdapter(null);
+//    }
 
     /**
      * This interface must be implemented by activities that contain this
