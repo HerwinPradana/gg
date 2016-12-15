@@ -51,12 +51,13 @@ public class PostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        View list = view.findViewById(R.id.list);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+        if (list instanceof RecyclerView) {
+            Context context = list.getContext();
 
-            recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) list;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new PostRecyclerViewAdapter(postList.items, listener, context));
         }

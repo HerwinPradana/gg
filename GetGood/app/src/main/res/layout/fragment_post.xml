@@ -94,7 +94,6 @@
         android:id="@+id/tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         chip:chip_side_padding="10dp">
 
     </com.plumillonforge.android.chipview.ChipView>
