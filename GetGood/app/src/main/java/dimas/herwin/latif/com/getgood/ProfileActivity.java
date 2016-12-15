@@ -12,7 +12,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +23,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import dimas.herwin.latif.com.getgood.fragments.AboutFragment;
 import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
@@ -53,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity implements
     private ImageView   imageView;
     private ImageView   bannerView;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +63,8 @@ public class ProfileActivity extends AppCompatActivity implements
         imageView   = (ImageView) findViewById(R.id.profile_image);
         bannerView  = (ImageView) findViewById(R.id.profile_banner);
 
-        SharedPreferences sharedPreferences     = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo         networkInfo         = connectivityManager.getActiveNetworkInfo();
 
@@ -143,10 +143,34 @@ public class ProfileActivity extends AppCompatActivity implements
                     super.onTabReselected(tab);
                 }
             });
+
+            loadProfile();
         }
 
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void loadProfile() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnected()){
+            String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/";
+            url               = (this.userId == null)? url + "interests" : url + "users";
+            String userId     = (this.userId == null)? sharedPreferences.getString("user_id", "0") : this.userId;
+            String parameters = "id=" + userId;
+
+            new HttpTask(new AsyncTaskListener() {
+                @Override
+                public void onTaskCompleted(String response) {
+                    handleGetProfileTask(response);
+                }
+            }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
+        }
+        else {
+            Log.e("CONNECTION: ", "NOT CONNECTED");
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

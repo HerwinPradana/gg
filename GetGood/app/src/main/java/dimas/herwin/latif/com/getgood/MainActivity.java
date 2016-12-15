@@ -35,10 +35,13 @@ public class MainActivity extends AppCompatActivity
         PostFragment.OnListFragmentInteractionListener,
         CommunityFragment.OnListFragmentInteractionListener {
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity
 
             if(feedTab != null) {
                 feedTab.setIcon(R.drawable.ic_home_black_24dp);
-                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.red_800, null));
+                feedTab.getIcon().setTint(ResourcesCompat.getColor(getResources(), R.color.white, null));
             }
             if(discoveryTab != null) {
                 discoveryTab.setIcon(R.drawable.ic_explore_black_24dp);
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra(ProfileActivity.USER_ID, sharedPreferences.getString("user_id", null));
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
             case R.id.logout:
@@ -115,7 +120,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void logout(){
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
         sharedPreferences.edit().clear().commit();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
