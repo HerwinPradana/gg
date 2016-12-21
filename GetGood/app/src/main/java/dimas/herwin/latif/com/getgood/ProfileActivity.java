@@ -218,7 +218,9 @@ public class ProfileActivity extends AppCompatActivity implements
 
             Bundle feedBundle = new Bundle();
             feedBundle.putString(USER_ID, userId);
+
             feedFragment.setArguments(feedBundle);
+            communitiesFragment.setArguments(feedBundle);
         }
 
         @Override
