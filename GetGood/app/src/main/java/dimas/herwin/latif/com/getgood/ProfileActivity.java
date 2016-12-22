@@ -101,10 +101,10 @@ public class ProfileActivity extends AppCompatActivity implements
                 feedTab.setIcon(R.drawable.ic_art_track_black_24dp);
                 Drawable icon = feedTab.getIcon();
                 if(icon != null)
-                    icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
+                    icon.setTint(ResourcesCompat.getColor(getResources(), R.color.red_500, null));
             }
             if(communityTab != null) {
-                communityTab.setIcon(R.drawable.community);
+                communityTab.setIcon(R.drawable.ic_group_black_24dp);
                 Drawable icon = communityTab.getIcon();
                 if(icon != null)
                     icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
