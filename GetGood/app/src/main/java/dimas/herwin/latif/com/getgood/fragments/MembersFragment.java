@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -21,8 +20,6 @@ import org.json.JSONObject;
 
 import dimas.herwin.latif.com.getgood.CommunityActivity;
 import dimas.herwin.latif.com.getgood.LoginActivity;
-import dimas.herwin.latif.com.getgood.PostActivity;
-import dimas.herwin.latif.com.getgood.ProfileActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
@@ -32,28 +29,24 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FeedFragment.OnFragmentInteractionListener} interface
+ * {@link MembersFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FeedFragment#newInstance} factory method to
+ * Use the {@link MembersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeedFragment extends Fragment {
+public class MembersFragment extends Fragment{
 
     private OnFragmentInteractionListener listener;
     private View view;
     private SharedPreferences sharedPreferences;
+    private String communityId = null;
 
-    private String userId       = null;
-    private String communityId  = null;
-
-    FloatingActionButton addPostBtn;
-
-    public FeedFragment() {
+    public MembersFragment() {
         // Required empty public constructor
     }
 
-    public static FeedFragment newInstance() {
-        return new FeedFragment();
+    public static MembersFragment newInstance() {
+        return new MembersFragment();
     }
 
     @Override
@@ -61,34 +54,26 @@ public class FeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
 
-
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            userId      = bundle.getString(ProfileActivity.USER_ID, null);
-            communityId = bundle.getString(CommunityActivity.COMMUNITY_ID, null);
-        }
+        if(getArguments() != null)
+            communityId = getArguments().getString(CommunityActivity.COMMUNITY_ID, null);
     }
 
     private void loadFeeds() {
-        if(view.findViewById(R.id.list_post) != null){
+        if(view.findViewById(R.id.list_member) != null){
             ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/get";
-                String parameters;
+                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/members";
+                String parameters = "";
 
-                if(userId != null)
-                    parameters = "user_id=" + userId;
-                else if(communityId != null)
+                if(this.communityId != null) {
                     parameters = "community_id=" + communityId;
-                else
-                    parameters = "type=interest";
-
+                }
                 new HttpTask(new AsyncTaskListener() {
                     @Override
                     public void onTaskCompleted(String response) {
-                        handleGetPostTask(response);
+                        handleGetMembersTask(response);
                     }
                 }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
             }
@@ -98,22 +83,22 @@ public class FeedFragment extends Fragment {
         }
     }
 
-    public void handleGetPostTask(String response) {
+    public void handleGetMembersTask(String response) {
         try {
             JSONObject json = new JSONObject(response);
 
-            if(!json.has("error")){
-                JSONArray posts = json.getJSONArray("result");
+            if(!json.has("error")) {
+                JSONArray members = json.getJSONArray("result");
 
-                PostFragment postFragment = new PostFragment();
+                MemberFragment memberFragment = new MemberFragment();
 
                 Bundle args = new Bundle();
-                args.putString(PostFragment.ARG_JSON, posts.toString());
+                args.putString(MemberFragment.ARG_JSON, members.toString());
 
-                postFragment.setArguments(args);
+                memberFragment.setArguments(args);
 
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                transaction.replace(R.id.list_post, postFragment);
+                transaction.replace(R.id.list_member, memberFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -128,36 +113,18 @@ public class FeedFragment extends Fragment {
                 }
             }
         }
-        catch (JSONException e){
+        catch (JSONException error){
             Log.d("Response", response);
-            Log.e("FeedFragment", e.getMessage());
+            Log.e("Members Fragment", error.getMessage());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_feed, container, false);
-
-//        String image = sharedPreferences.getString("user_image", null);
-
-//        if(image != null) {
-//            ImageView userImageView = (ImageView) view.findViewById(R.id.user_image);
-//            Picasso.with(getActivity()).load("http://" + getString(R.string.server_address) + "/ggwp/public/images/users/" + image).placeholder(R.mipmap.placeholder).into(userImageView);
-//        }
+        view = inflater.inflate(R.layout.fragment_members, container, false);
 
         if(savedInstanceState == null)
             loadFeeds();
-
-
-        // Add Post Action Button Event Handler
-        addPostBtn = (FloatingActionButton) view.findViewById(R.id.add_post_action_btn);
-        if(addPostBtn != null) {
-            addPostBtn.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), PostActivity.class));
-                }
-            });
-        }
 
         // Inflate the layout for this fragment
         return view;
@@ -198,6 +165,7 @@ public class FeedFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

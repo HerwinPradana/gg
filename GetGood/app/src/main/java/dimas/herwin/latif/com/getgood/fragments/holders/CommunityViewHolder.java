@@ -1,6 +1,7 @@
 package dimas.herwin.latif.com.getgood.fragments.holders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.plumillonforge.android.chipview.ChipView;
 import com.squareup.picasso.Picasso;
 
+import dimas.herwin.latif.com.getgood.CommunityActivity;
 import dimas.herwin.latif.com.getgood.R;
 import dimas.herwin.latif.com.getgood.fragments.adapters.TagChipViewAdapter;
 import dimas.herwin.latif.com.getgood.fragments.items.Community;
@@ -61,7 +63,10 @@ public class CommunityViewHolder extends RecyclerView.ViewHolder {
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("CLICK", "DETAIL " + item.id);
+                Intent intent = new Intent(context, CommunityActivity.class);
+                intent.putExtra(CommunityActivity.COMMUNITY_ID, item.id);
+
+                context.startActivity(intent);
             }
         });
 

@@ -27,52 +27,51 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import dimas.herwin.latif.com.getgood.fragments.AboutFragment;
-import dimas.herwin.latif.com.getgood.fragments.CommunitiesFragment;
-import dimas.herwin.latif.com.getgood.fragments.CommunityFragment;
 import dimas.herwin.latif.com.getgood.fragments.FeedFragment;
+import dimas.herwin.latif.com.getgood.fragments.MemberFragment;
+import dimas.herwin.latif.com.getgood.fragments.MembersFragment;
 import dimas.herwin.latif.com.getgood.fragments.PostFragment;
-import dimas.herwin.latif.com.getgood.fragments.items.Community;
+import dimas.herwin.latif.com.getgood.fragments.items.Member;
 import dimas.herwin.latif.com.getgood.fragments.items.Post;
 import dimas.herwin.latif.com.getgood.tasks.AsyncTaskListener;
 import dimas.herwin.latif.com.getgood.tasks.HttpTask;
 
-public class ProfileActivity extends AppCompatActivity implements
+public class CommunityActivity extends AppCompatActivity implements
         FeedFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener,
         PostFragment.OnListFragmentInteractionListener,
-        CommunityFragment.OnListFragmentInteractionListener,
-        CommunitiesFragment.OnFragmentInteractionListener {
+        AboutFragment.OnFragmentInteractionListener,
+        MembersFragment.OnFragmentInteractionListener,
+        MemberFragment.OnListFragmentInteractionListener
+{
 
-    public final static String USER_ID = "dimas.herwin.latif.com.getgood.USER_ID";
-    private String userId = null;
+    public final static String COMMUNITY_ID = "dimas.herwin.latif.com.getgood.COMMUNITY_ID";
+    private String communityId = null;
 
     private TextView    nameView;
     private ImageView   imageView;
-    private ImageView   bannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_community_detail);
 
-        userId = getIntent().getStringExtra(USER_ID);
+        communityId = getIntent().getStringExtra(COMMUNITY_ID);
 
-        nameView    = (TextView) findViewById(R.id.profile_name);
-        imageView   = (ImageView) findViewById(R.id.profile_image);
-        bannerView  = (ImageView) findViewById(R.id.profile_banner);
+        nameView    = (TextView) findViewById(R.id.name);
+        imageView   = (ImageView) findViewById(R.id.image);
 
-        SharedPreferences   sharedPreferences   = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        SharedPreferences sharedPreferences     = getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo         networkInfo         = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo                 = connectivityManager.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnected()){
-            String url    = "http://" + getString(R.string.server_address) + "/ggwp/public/api/user/profile";
-            String params = "id=" + userId;
+            String url    = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/detail";
+            String params = "id=" + communityId;
 
             new HttpTask(new AsyncTaskListener() {
                 @Override
                 public void onTaskCompleted(String response) {
-                    handleGetProfileTask(response);
+                    handleGetCommunityTask(response);
                 }
             }).execute(url, "POST", params, sharedPreferences.getString("token", null));
         }
@@ -82,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        ProfileActivity.SectionsPagerAdapter sectionsPagerAdapter = new ProfileActivity.SectionsPagerAdapter(getSupportFragmentManager());
+        CommunityActivity.SectionsPagerAdapter sectionsPagerAdapter = new CommunityActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         ViewPager viewPager = (ViewPager) findViewById(R.id.container);
@@ -93,9 +92,9 @@ public class ProfileActivity extends AppCompatActivity implements
         if(tabLayout != null) {
             tabLayout.setupWithViewPager(viewPager);
 
-            TabLayout.Tab feedTab       = tabLayout.getTabAt(0);
-            TabLayout.Tab communityTab  = tabLayout.getTabAt(1);
-            TabLayout.Tab aboutTab      = tabLayout.getTabAt(2);
+            TabLayout.Tab feedTab   = tabLayout.getTabAt(0);
+            TabLayout.Tab memberTab = tabLayout.getTabAt(1);
+            TabLayout.Tab aboutTab  = tabLayout.getTabAt(2);
 
             if(feedTab != null) {
                 feedTab.setIcon(R.drawable.ic_art_track_black_24dp);
@@ -103,9 +102,9 @@ public class ProfileActivity extends AppCompatActivity implements
                 if(icon != null)
                     icon.setTint(ResourcesCompat.getColor(getResources(), R.color.red_500, null));
             }
-            if(communityTab != null) {
-                communityTab.setIcon(R.drawable.ic_group_black_24dp);
-                Drawable icon = communityTab.getIcon();
+            if(memberTab != null) {
+                memberTab.setIcon(R.drawable.ic_group_black_24dp);
+                Drawable icon = memberTab.getIcon();
                 if(icon != null)
                     icon.setTint(ResourcesCompat.getColor(getResources(), R.color.grey_500, null));
             }
@@ -147,7 +146,6 @@ public class ProfileActivity extends AppCompatActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
@@ -158,18 +156,18 @@ public class ProfileActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleGetProfileTask(String response) {
+    public void handleGetCommunityTask(String response) {
         try {
             JSONObject json = new JSONObject(response);
 
             if(!json.has("error")){
-                JSONObject user = json.getJSONObject("result");
+                JSONObject community = json.getJSONObject("result");
 
-                nameView.setText(user.getString("name"));
+                nameView.setText(community.getString("name"));
 
                 String server = getString(R.string.server_address);
-                Picasso.with(this).load("http://" + server + "/ggwp/public/images/users/" + user.getString("image")).placeholder(R.mipmap.placeholder).into(imageView);
-                Picasso.with(this).load("http://" + server + "/ggwp/public/images/banners/" + user.getString("banner")).placeholder(R.mipmap.placeholder_banner).into(bannerView);
+                Picasso.with(this).load("http://" + server + "/ggwp/public/images/communities/" + community.getString("image")).placeholder(R.mipmap.placeholder).into(imageView);
+                //Picasso.with(this).load("http://" + server + "/ggwp/public/images/banners/" + user.getString("banner")).placeholder(R.mipmap.placeholder_banner).into(bannerView);
             }
             else {
                 // If token expires return to login.
@@ -184,7 +182,7 @@ public class ProfileActivity extends AppCompatActivity implements
         }
         catch (JSONException e){
             Log.d("Response", response);
-            Log.e("ProfileActivity", e.getMessage());
+            Log.e("CommunityActivity", e.getMessage());
         }
     }
 
@@ -196,31 +194,27 @@ public class ProfileActivity extends AppCompatActivity implements
 
     }
 
-    public void onListFragmentInteraction(Community community){
+    public void onListFragmentInteraction(Member member){
 
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private FeedFragment        feedFragment;
-        private CommunitiesFragment communitiesFragment;
-        private AboutFragment       aboutFragment;
+        private FeedFragment    feedFragment;
+        private MembersFragment usersFragment;
+        private AboutFragment   aboutFragment;
 
         private SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            feedFragment        = FeedFragment.newInstance();
-            communitiesFragment = CommunitiesFragment.newInstance();
-            aboutFragment       = AboutFragment.newInstance();
+            feedFragment  = FeedFragment.newInstance();
+            usersFragment = MembersFragment.newInstance();
+            aboutFragment = AboutFragment.newInstance();
 
             Bundle feedBundle = new Bundle();
-            feedBundle.putString(USER_ID, userId);
+            feedBundle.putString(COMMUNITY_ID, communityId);
 
             feedFragment.setArguments(feedBundle);
-            communitiesFragment.setArguments(feedBundle);
+            usersFragment.setArguments(feedBundle);
         }
 
         @Override
@@ -229,11 +223,11 @@ public class ProfileActivity extends AppCompatActivity implements
                 case 0:
                     return feedFragment;
                 case 1:
-                    return communitiesFragment;
+                    return usersFragment;
                 case 2:
                     return aboutFragment;
                 default:
-                return null;
+                    return null;
             }
         }
 
@@ -242,19 +236,5 @@ public class ProfileActivity extends AppCompatActivity implements
             // Show 3 total pages.
             return 3;
         }
-
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            switch (position) {
-//                case 0:
-//                    return getString(R.string.feed);
-//                case 1:
-//                    return getString(R.string.communities);
-//                case 2:
-//                    return getString(R.string.about_me);
-//            }
-//
-//            return null;
-//        }
     }
 }

@@ -59,8 +59,8 @@ public class DiscoveryFragment extends Fragment {
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/discovery";
-                String parameters = "id=" + sharedPreferences.getString("user_id", "0");
+                String url        = "http://" + getString(R.string.server_address) + "/ggwp/public/api/post/get";
+                String parameters = "type=discovery";
 
                 new HttpTask(new AsyncTaskListener() {
                     @Override

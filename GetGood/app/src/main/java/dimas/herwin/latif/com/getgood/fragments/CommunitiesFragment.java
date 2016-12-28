@@ -64,27 +64,18 @@ public class CommunitiesFragment extends Fragment{
             NetworkInfo networkInfo         = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected()){
-                if(this.userId == null) {
-                    String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/get";
+                String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/get";
+                String parameters = "";
 
-                    new HttpTask(new AsyncTaskListener() {
-                        @Override
-                        public void onTaskCompleted(String response) {
-                            handleGetCommunitiesTask(response);
-                        }
-                    }).execute(url, "POST", null, sharedPreferences.getString("token", null));
+                if(this.userId != null) {
+                    parameters = "user_id=" + userId;
                 }
-                else {
-                    String url = "http://" + getString(R.string.server_address) + "/ggwp/public/api/community/users";
-                    String parameters = "id=" + userId;
-
-                    new HttpTask(new AsyncTaskListener() {
-                        @Override
-                        public void onTaskCompleted(String response) {
-                            handleGetCommunitiesTask(response);
-                        }
-                    }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
-                }
+                new HttpTask(new AsyncTaskListener() {
+                    @Override
+                    public void onTaskCompleted(String response) {
+                        handleGetCommunitiesTask(response);
+                    }
+                }).execute(url, "POST", parameters, sharedPreferences.getString("token", null));
             }
             else {
                 Log.e("CONNECTION: ", "NOT CONNECTED");
